@@ -3,7 +3,8 @@ module.exports = {
     data: function() {
         return {
             content: null,
-            editor: null
+            editor: null,
+            editorElt: null,
         };
     },
     props: ['file'],
@@ -30,11 +31,14 @@ module.exports = {
         },
         save: function(){
             console.log("saving file to github...");
+            this.content = this.editorElt.innerHTML;
         },
         initEditor: function(){
+            this.editorElt = document.querySelector('#editor-content'); 
             switch (this.ext){
                 case "md":
                     console.log("loading md editor");
+                    
                     this.editor = this.initMdEditor();
                     break;
                 case "html":
@@ -45,7 +49,7 @@ module.exports = {
             }
         },
         initMdEditor: function(){
-            var editor = window.cledit(document.querySelector('#editor-content'));
+            var editor = window.cledit(this.editorElt);
             
             var prismGrammar = window.mdGrammar({
                 fences: true,
