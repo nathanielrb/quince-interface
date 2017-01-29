@@ -78,13 +78,15 @@ var editorJs = [
   'cledit/scripts/cleditSelectionMgr',
   'cledit/scripts/cleditUndoMgr',
   'cledit/scripts/cleditUtils',
-  'cledit/scripts/cleditWatcher',
-  'src/js/components/github-file-editor/editor.js', 
-  'src/js/components/github-file-editor/mdGrammar.js'];
+  'cledit/scripts/cleditWatcher'];
 editorJs.map(require.resolve);
 
 gulp.task('editor-js', function() {
-    var scripts = editorJs.map(function(script){ return 'node_modules/' + script + '.js' });
+    var scripts = editorJs
+    .map(function(script){ return 'node_modules/' + script + '.js' })
+    .concat(['src/js/components/github-file-editor/editor.js', 
+             'src/js/components/github-file-editor/mdGrammar.js']);
+    
     buildJs(scripts, 'editor.js', 'dist/js');
 /*
     gulp.src(scripts)
