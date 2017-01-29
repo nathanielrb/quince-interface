@@ -35,7 +35,7 @@ module.exports = {
         initEditor: function(){
             this.editorElt = document.querySelector('#editor-content'); 
             switch (this.ext){
-                case "md":
+                case "mdo":
                     console.log("loading md editor");
                     
                     this.editor = this.initMdEditor();
