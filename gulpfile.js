@@ -49,12 +49,12 @@ gulp.task('js', function() {
                   'src/js/components/github-file-editor/mdGrammar.js'],
         debug: true
     })
-    .transform(partialify)
+  /*  .transform(partialify)
     .bundle()
     .on('error', function (err) {
         console.log(err.toString());
         this.emit("end");
-    })
+    })*/
     .pipe(concat('app.min.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
