@@ -10,7 +10,7 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 // var cledit = require('cledit');
 
-var gooflediff = require.resolve('googlediff');
+var install = require("gulp-install");
 
 gulp.task('html', function() {
     gulp.src('src/*.html')
