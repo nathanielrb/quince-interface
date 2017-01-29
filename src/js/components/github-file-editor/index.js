@@ -25,7 +25,7 @@ module.exports = {
     },
     watch: {
         path: function(){
-            if(path)
+            if(this.path)
                 this.getFile();
             else
                 this.content = null;
