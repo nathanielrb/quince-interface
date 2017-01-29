@@ -9,7 +9,7 @@
 <body>
 <div id="container">
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-4">
             <form id="changeRepoForm" @submit.prevent="changeRepo()" class="form-inline">
                 <div class="form-group">
                     <label for="fullRepoName">Full Repo Name</label>
@@ -19,6 +19,8 @@
             </form>
             <hr>
             <github-file-explorer :username="username" :repo="repo" v-on:edit="editFile"></github-file-explorer>
+        </div>
+        <div class="col-md-8">
             <github-file-editor :file="fileToEdit"></github-file-editor>
         </div>
     </div>
