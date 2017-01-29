@@ -30,6 +30,7 @@ module.exports = {
             this.file = null;
         },
         save: function(){
+            this.content = this.editor.getContent();
             console.log("saving file to github...");
         },
         initEditor: function(){
