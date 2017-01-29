@@ -56,7 +56,7 @@ editorJs.map(require.resolve);
 
 gulp.task('js', function() {
     browserify({
-        entries: editorJs.push('src/js/app.js'),
+        entries: 'src/js/app.js',
         debug: true
     })
     .transform(partialify)
@@ -78,12 +78,12 @@ gulp.task('js', function() {
     .pipe(connect.reload());
 });
 
-/*
+
 
 gulp.task('editor-js', function () {
      gulp.src(editorJs)
         .pipe(gulp.dest('dist/js'));
-*/
+});
 
 
 gulp.task('start-server', function() {
