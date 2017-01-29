@@ -81,15 +81,7 @@ var editorJs = [
 editorJs.map(require.resolve);
 
 function buildJs (srcStream, dest) {
-  if (isDebug) {
-    var sourcemaps = require('gulp-sourcemaps')
-    srcStream = srcStream
-      .pipe(sourcemaps.init())
-      .pipe(concat(dest, {
-        newLine: ';'
-      }))
-      .pipe(sourcemaps.write())
-  } else {
+ 
     srcStream = srcStream
       .pipe(size({
         // showFiles: true
@@ -99,8 +91,8 @@ function buildJs (srcStream, dest) {
       .pipe(concat(dest, {
         newLine: ';'
       }))
-  }
-  return srcStream.pipe(gulp.dest('public'))
+  
+  return srcStream.pipe(gulp.dest('dist/js'))
 }
 
 gulp.task('editor-js', function () {
@@ -109,7 +101,7 @@ gulp.task('editor-js', function () {
       objectMode: true
     },
                 gulp.src(editorJs)
-    ), 'app-min.js')
+    ), 'editor.min.js')
 })
 
 
