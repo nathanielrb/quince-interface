@@ -5,3 +5,8 @@ body {
 #changeRepoForm {
     margin-bottom: 30px;
 }
+
+textarea {
+  width: 80%;
+    height: 900px;
+}
