@@ -45,7 +45,7 @@ module.exports = {
             }
         },
         initMdEditor: function(){
-            var editor = window.cledit(document.querySelector('.content'));
+            var editor = window.cledit(document.querySelector('#editor-content'));
             
             var prismGrammar = window.mdGrammar({
                 fences: true,
