@@ -19,7 +19,7 @@
             </form>
             <hr>
             <github-file-explorer :username="username" :repo="repo" v-on:edit="editFile"></github-file-explorer>
-            <github-file-editor :file="editFile"></github-file-editor>
+            <github-file-editor :file="fileToEdit"></github-file-editor>
         </div>
     </div>
 
