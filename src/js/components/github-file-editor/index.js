@@ -6,7 +6,7 @@ module.exports = {
             editor: null
         };
     },
-    props: ['path'],
+    props: ['path', 'url'],
     computed: {
         ext: function(){
          var re = /(?:\.([^.]+))?$/;
@@ -21,13 +21,16 @@ module.exports = {
                 function(data) {
                     this.content = data;
                     this.initEditor();
-                }
-            );
+                },
+                { headers: {'Accept': 'application/vnd.github.v3.raw'}});
         },
         close: function(){
+            console.log("closing editor");
             this.path = null;
         },
-        save: function(){},
+        save: function(){
+            console.log("saving file to github...");
+        },
         initEditor: function(){
             switch (ext){
                 case "md":
