@@ -8,7 +8,7 @@ var vm = new Vue({
         fullRepoName: '',
         username: '',
         repo: '',
-        editPath: null
+        editFile: null
     },
     methods: {
         changeRepo: function() {
@@ -22,9 +22,9 @@ var vm = new Vue({
             console.log("repo:", this.repo);
             console.groupEnd("Vue Data");
         },
-        editFile: function(path){
-           console.log(path);  
-            this.editPath = path;
+        editFile: function(file){
+           console.log(file.path);  
+            this.editFile = file;
         }
     },
     components: {
