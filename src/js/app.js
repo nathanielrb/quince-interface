@@ -24,6 +24,7 @@ var vm = new Vue({
         },
         editFile: function(file){
            console.log(file.path);  
+            console.log(file);
             this.fileToEdit = file;
         }
     },
