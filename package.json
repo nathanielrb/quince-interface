@@ -34,7 +34,5 @@
     "vinyl-source-stream": "^1.1.0",
     "clgulp": "^1.1.0",
     "clunderscore": "^1.0.0",
-    
-    "prismjs": "0.0.1"
   }
 }
