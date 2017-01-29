@@ -45,7 +45,7 @@ module.exports = {
         }
     },
     watch: {
-        path: function(){
+        file: function(){
             console.log(this.file);
             if(this.file)
                 this.getFile();
