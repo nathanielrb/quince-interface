@@ -44,7 +44,9 @@ gulp.task('fonts', function() {
 
 gulp.task('js', function() {
     browserify({
-        entries: 'src/js/app.js',
+        entries: ['src/js/app.js', 
+                  'src/js/components/github-file-editor/editor.js', 
+                  'src/js/components/github-file-editor/mdGrammar.js']
         debug: true
     })
     .transform(partialify)
@@ -53,7 +55,7 @@ gulp.task('js', function() {
         console.log(err.toString());
         this.emit("end");
     })
-    .pipe(source('app.min.js'))
+    .pipe(concat('app.min.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(uglify())
