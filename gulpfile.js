@@ -63,6 +63,9 @@ gulp.task('js', function() {
     .pipe(connect.reload());
 });
 
+var appVendorJs = [
+    'googlediff/javascript/diff_match_patch_uncompressed'];
+appVendorJs.map(require.resolve)
 
 gulp.task('start-server', function() {
     connect.server({ root: 'dist', livereload: true });
