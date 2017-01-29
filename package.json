@@ -16,6 +16,7 @@
     "bootstrap": "^3.3.5",
     "vue": "^1.0.0",
     "vue-resource": "^0.1.16",
+    "googlediff": "^0.1.0",
     "cledit": "^1.2.0"
   },
   "devDependencies": {
