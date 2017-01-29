@@ -80,8 +80,10 @@ var editorJs = [
   'cledit/scripts/cleditWatcher'];
 editorJs.map(require.resolve);
 
+
+
 gulp.task('editor-js', function() {
-    return browserify({entries: editorJs, extensions: ['.js']})
+    return browserify({entries: editorJs})
         .bundle()
         //Pass desired output filename to vinyl-source-stream
         .pipe(source('editor.min.js'))
