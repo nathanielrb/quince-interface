@@ -2,7 +2,7 @@ var Vue = require('vue');
 Vue.config.debug = true;
 Vue.use(require('vue-resource'));
 
-new Vue({
+var vm = new Vue({
     el: '#container',
     data: {
         fullRepoName: '',
