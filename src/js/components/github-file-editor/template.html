@@ -1,5 +1,5 @@
-<div id="editor" v-if="path">
-  <div class="banner">{{ path }}</div>
+<div id="editor" v-if="file">
+  <div class="banner">{{ file.path }}</div>
   <div class="menu">
     <a href="#" v:on-click="save()">save</a>
     <a href="#" v:on-click="close()">close</a>
