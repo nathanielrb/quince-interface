@@ -6,7 +6,7 @@ module.exports = {
             editor: null
         };
     },
-    props: ['path'],
+    props: ['path', 'url'],
     computed: {
         ext: function(){
          var re = /(?:\.([^.]+))?$/;
@@ -17,7 +17,7 @@ module.exports = {
         getFile: function(){
             vm = this;
             console.log("getting file from github");
-            this.$http.get(this.path,
+            this.$http.get(this.url,
                 function(data) {
                     this.content = data;
                     this.initEditor();
