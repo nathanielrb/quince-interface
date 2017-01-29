@@ -81,7 +81,30 @@ var editorJs = [
 editorJs.map(require.resolve);
 
 
+function buildJs (srcStream, dest) {
+    srcStream = srcStream
+      .pipe(size({
+        // showFiles: true
+      }))
+      .pipe(ngAnnotate())
+      .pipe(uglify())
+      .pipe(concat(dest, {
+        newLine: ';'
+      }))
+ 
+  return srcStream.pipe(gulp.dest('dist/js'))
+}
 
+gulp.task('editor-js', function () {
+    return buildJs(
+        streamqueue({
+            objectMode: true
+    },
+                    gulp.src(appVendorJs),
+                ), 'editor.min.js')
+})
+
+/*
 gulp.task('editor-js', function() {
     return browserify({entries: editorJs.map(function(file){return file+'.js'}) })
         .bundle()
@@ -90,7 +113,7 @@ gulp.task('editor-js', function() {
         // Start piping stream to tasks!
         .pipe(gulp.dest('dist/js'));
 });
-     
+  */   
 
 
 gulp.task('start-server', function() {
