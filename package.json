@@ -17,6 +17,8 @@
     "vue": "^1.0.0",
     "vue-resource": "^0.1.16",
     "googlediff": "^0.1.0",
+    "clunderscore": "^1.0.0",
+    "prismjs": "0.0.1",
     "cledit": "^1.2.0"
   },
   "devDependencies": {
@@ -32,8 +34,6 @@
     "partialify": "^3.1.5",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "clgulp": "^1.1.0",
-    "clunderscore": "^1.0.0",
-    "prismjs": "0.0.1"
+    "clgulp": "^1.1.0"
   }
 }
