@@ -22,7 +22,7 @@ var vm = new Vue({
             console.log("repo:", this.repo);
             console.groupEnd("Vue Data");
         },
-        editPath: function(path){
+        editFile: function(path){
            console.log(path);  
             this.editPath = path;
         }
