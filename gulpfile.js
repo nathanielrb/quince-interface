@@ -85,10 +85,9 @@ var streamqueue = require('streamqueue');
 
 
 gulp.task('editor-js', function () {
-    return buildJs(
-        streamqueue({ objectMode: true },
+    streamqueue({ objectMode: true },
                     gulp.src(editorJs)
-                   )
+               )
         .pipe(source('editor.min.js'))
         .pipe(gulp.dest('dist/js'))
 });
