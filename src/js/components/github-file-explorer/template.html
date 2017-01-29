@@ -21,7 +21,7 @@
                         </div>
                     </td>
                     <td class="text-right">
-                        <a href="#" v-on:click="$emit('edit', {path: file.path, url: file.url})"  v-if="editable(file)"><i class="fa fa-edit"></i></a>
+                        <a href="#" v-on:click="$emit('edit', file)"  v-if="editable(file)"><i class="fa fa-edit"></i></a>
                         <a href="{{ file.download_url }}" download v-if="file.type === 'file'"><i class="fa fa-cloud-download"></i></a>
                     </td>
                 </tr>
