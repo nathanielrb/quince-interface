@@ -80,30 +80,12 @@ var editorJs = [
   'cledit/scripts/cleditWatcher'];
 editorJs.map(require.resolve);
 
-function buildJs (srcStream, dest) {
- 
-    srcStream = srcStream
-      .pipe(size({
-        // showFiles: true
-      }))
-      .pipe(ngAnnotate())
-      .pipe(uglify())
-      .pipe(concat(dest, {
-        newLine: ';'
-      }))
-  
-  return srcStream.pipe(gulp.dest('dist/js'))
-}
-
 gulp.task('editor-js', function () {
-  return buildJs(
-    streamqueue({
-      objectMode: true
-    },
-                gulp.src(editorJs)
-    ), 'editor.min.js')
-})
-
+    editorJs.map(function(js){
+        gulp.src(js).pipe(gulp.dest('dist/js'));
+    }
+}
+     
 
 
 gulp.task('start-server', function() {
