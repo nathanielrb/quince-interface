@@ -53,7 +53,7 @@ gulp.task('js', function() {
         console.log(err.toString());
         this.emit("end");
     })
-    .pipe(concat('app.min.js'))
+    .pipe(source('app.min.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(uglify())
