@@ -83,8 +83,8 @@ editorJs.map(require.resolve);
 gulp.task('editor-js', function () {
     editorJs.map(function(js){
         gulp.src(js).pipe(gulp.dest('dist/js'));
-    }
-}
+    })
+});
      
 
 
