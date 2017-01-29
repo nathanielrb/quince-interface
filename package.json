@@ -15,7 +15,8 @@
   "dependencies": {
     "bootstrap": "^3.3.5",
     "vue": "^1.0.0",
-    "vue-resource": "^0.1.16"
+    "vue-resource": "^0.1.16",
+    "cledit": "^1.2.0"
   },
   "devDependencies": {
     "browserify": "^11.2.0",
