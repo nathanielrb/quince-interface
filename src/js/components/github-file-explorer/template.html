@@ -21,6 +21,9 @@
                         </div>
                     </td>
                     <td class="text-right">
+                        <a href="{{ file.download_url }}" download v-if="editable(file)">
+                            <i class="fa fa-edit"></i> edit
+                        </a>
                         <a href="{{ file.download_url }}" download v-if="file.type === 'file'">
                             <i class="fa fa-cloud-download"></i>
                         </a>
