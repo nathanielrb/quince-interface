@@ -47,14 +47,11 @@ gulp.task('js', function() {
                   'src/js/components/github-file-editor/editor.js', 
                   'src/js/components/github-file-editor/mdGrammar.js'];
     
-     buildJs(scripts, 'app.js', 'dist/js');
-    /*
-    browserify({
-        entries: ['src/js/app.js', 
-                  'src/js/components/github-file-editor/editor.js', 
-                  'src/js/components/github-file-editor/mdGrammar.js'],
+    gulp.src(scripts)
+    .pipe(browserify({
+        
         debug: true
-    })
+    }))
     .transform(partialify)
     .bundle()
     .on('error', function (err) {
@@ -72,7 +69,7 @@ gulp.task('js', function() {
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('dist/js'))
     .pipe(connect.reload());
-    */
+    
 });
 
 var editorJs = [
