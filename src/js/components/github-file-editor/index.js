@@ -17,11 +17,22 @@ module.exports = {
         getFile: function(){
             vm = this;
             console.log("getting file from github");
-            this.content = "FILE";
+            this.$http.get(this.path,
+                function(data) {
+                    this.content = data;
+                    this.initEditor();
+                }
+            );
         },
         close: function(){},
         save: function(){},
-        initEditor: function(){}
+        initEditor: function(){
+            switch (ext){
+                case "md":
+                    console.log("loading md editor");
+                    break;
+            }
+        }
     },
     watch: {
         path: function(){
