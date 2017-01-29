@@ -38,7 +38,9 @@ module.exports = {
                 case "md":
                     console.log("loading md editor");
                     
-                    this.editor = this.initMdEditor();
+                    Vue.nextTick(function(){
+                        this.editor = this.initMdEditor();
+                    });
                     break;
                 case "html":
                 case "yaml":
