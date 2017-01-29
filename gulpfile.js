@@ -84,10 +84,9 @@ var streamqueue = require('streamqueue');
 
 function buildJs (srcStream, dest) {
     srcStream = srcStream
-      .pipe(size({
+      /*.pipe(size({
         // showFiles: true
-      }))
-      .pipe(ngAnnotate())
+      }))*/
       .pipe(uglify())
       .pipe(concat(dest, {
         newLine: ';'
