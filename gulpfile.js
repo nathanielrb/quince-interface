@@ -80,11 +80,13 @@ var editorJs = [
   'cledit/scripts/cleditWatcher'];
 editorJs.map(require.resolve);
 
-gulp.task('editor-js', function () {
-    editorJs.map(function(js){
-        console.log(js);
-        gulp.src(js+'.js').pipe(gulp.dest('dist/js'));
-    })
+gulp.task('editor-js', function() {
+    return browserify({entries: editorJs, extensions: ['.js'])
+        .bundle()
+        //Pass desired output filename to vinyl-source-stream
+        .pipe(source('editor.min.js'))
+        // Start piping stream to tasks!
+        .pipe(gulp.dest('dist/js'));
 });
      
 
@@ -101,7 +103,7 @@ gulp.task('watch:js', function() {
     gulp.watch('src/js/**/*.*', ['js']);
 });
 
-gulp.task('compile', ['html', 'css', 'fonts', 'js']);
+gulp.task('compile', ['html', 'css', 'fonts', 'js', 'editor-js']);
 gulp.task('watch', ['compile', 'watch:html', 'watch:js']);
 gulp.task('serve', ['watch', 'start-server']);
 gulp.task('default', ['compile']);
