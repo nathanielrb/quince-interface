@@ -6,9 +6,7 @@ module.exports = {
             editor: null
         };
     },
-    props: {
-        ['path']
-    },
+    props: ['path'],
     computed: {},
     methods: {},
     watch: {}
