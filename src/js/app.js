@@ -7,7 +7,8 @@ new Vue({
     data: {
         fullRepoName: '',
         username: '',
-        repo: ''
+        repo: '',
+        editPath: null
     },
     methods: {
         changeRepo: function() {
@@ -20,6 +21,10 @@ new Vue({
             console.log("username:", this.username);
             console.log("repo:", this.repo);
             console.groupEnd("Vue Data");
+        },
+        editPath: function(path){
+           console.log(path);  
+            this.editPath = path;
         }
     },
     components: {
