@@ -10,7 +10,7 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 // var cledit = require('cledit');
 
-var gooflediff = require('googlediff/javascript/diff_match_patch_uncompressed');
+var gooflediff = require.resolve('googlediff/javascript/diff_match_patch_uncompressed');
 
 gulp.task('html', function() {
     gulp.src('src/*.html')
