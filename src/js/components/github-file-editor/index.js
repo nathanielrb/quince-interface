@@ -6,7 +6,7 @@ module.exports = {
             editor: null
         };
     },
-    props: ['path', 'url'],
+    props: ['path'],
     computed: {
         ext: function(){
          var re = /(?:\.([^.]+))?$/;
@@ -32,10 +32,15 @@ module.exports = {
             console.log("saving file to github...");
         },
         initEditor: function(){
-            switch (ext){
+            switch (this.ext){
                 case "md":
                     console.log("loading md editor");
                     break;
+                case "html":
+                    console.log("loading html editor");
+                    break;
+                default:
+                    console.log("loading text editor");
             }
         }
     },
