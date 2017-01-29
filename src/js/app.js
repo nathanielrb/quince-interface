@@ -23,9 +23,8 @@ var vm = new Vue({
             console.groupEnd("Vue Data");
         },
         editFile: function(file){
-           console.log(file.path);  
-            console.log(file);
-            this.fileToEdit = file;
+            console.log("edit " + file.path);
+           this.fileToEdit = file;
         }
     },
     components: {
