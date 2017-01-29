@@ -23,6 +23,7 @@ new Vue({
         }
     },
     components: {
-        githubFileExplorer: require('./components/github-file-explorer')
+        githubFileExplorer: require('./components/github-file-explorer'),
+        githubFileEditor: require('./components/github-file-editor')
     }
 });
