@@ -97,12 +97,10 @@ function buildJs (srcStream, dest) {
 
 gulp.task('editor-js', function () {
     return buildJs(
-        streamqueue({
-            objectMode: true
-    },
-                    gulp.src(appVendorJs),
-                ), 'editor.min.js')
-})
+        streamqueue({ objectMode: true },
+                    gulp.src(appVendorJs)
+                   ), 'editor.min.js')
+});
 
 /*
 gulp.task('editor-js', function() {
