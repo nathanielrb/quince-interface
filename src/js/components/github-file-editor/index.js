@@ -6,18 +6,18 @@ module.exports = {
             editor: null
         };
     },
-    props: ['path', 'url'],
+    props: ['file'],
     computed: {
         ext: function(){
          var re = /(?:\.([^.]+))?$/;
-         return re.exec(this.path)[1];   
+         return re.exec(this.file.path)[1];   
         }
     },
     methods: {
         getFile: function(){
             vm = this;
             console.log("getting file from github");
-            this.$http.get(this.url,
+            this.$http.get(this.file.url,
                 function(data) {
                     this.content = data;
                     this.initEditor();
@@ -26,7 +26,7 @@ module.exports = {
         },
         close: function(){
             console.log("closing editor");
-            this.path = null;
+            this.file = null;
         },
         save: function(){
             console.log("saving file to github...");
@@ -46,7 +46,7 @@ module.exports = {
     },
     watch: {
         path: function(){
-            if(this.path)
+            if(this.file)
                 this.getFile();
             else
                 this.content = null;
