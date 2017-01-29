@@ -1,4 +1,8 @@
-<div id="editor">
+<div id="editor" v-if="path">
   <div class="banner">{{ path }}</div>
+  <div class="menu">
+    <a href="#" v:on-click="save">save</a>
+    <a href="#" v:on-click="close">close</a>
+  </div>
   <textarea v-model="content"></textarea>
 </div>  
