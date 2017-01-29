@@ -83,7 +83,7 @@ editorJs.map(require.resolve);
 
 
 gulp.task('editor-js', function() {
-    return browserify({entries: editorJs})
+    return browserify({entries: editorJs.map(function(file){return file+'.js'}) })
         .bundle()
         //Pass desired output filename to vinyl-source-stream
         .pipe(source('editor.min.js'))
