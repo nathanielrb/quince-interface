@@ -103,21 +103,15 @@ function buildJs (srcStream, dest) {
   return srcStream.pipe(gulp.dest('public'))
 }
 
-gulp.task('app-js', function () {
+gulp.task('editor-js', function () {
   return buildJs(
     streamqueue({
       objectMode: true
     },
-      gulp.src(appVendorJs),
-      gulp.src(appJsSrc),
-     
+                gulp.src(editorJs)
     ), 'app-min.js')
 })
 
-gulp.task('editor-js', function () {
-     gulp.src(editorJs)
-        .pipe(gulp.dest('dist/js'));
-});
 
 
 gulp.task('start-server', function() {
