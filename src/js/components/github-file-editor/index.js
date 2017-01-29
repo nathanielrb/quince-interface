@@ -24,7 +24,9 @@ module.exports = {
                 }
             );
         },
-        close: function(){},
+        close: function(){
+            this.path = null;
+        },
         save: function(){},
         initEditor: function(){
             switch (ext){
