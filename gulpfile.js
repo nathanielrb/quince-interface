@@ -80,6 +80,7 @@ var editorJs = [
   'cledit/scripts/cleditWatcher'];
 editorJs.map(require.resolve);
 
+var streamqueue = require('streamqueue');
 
 function buildJs (srcStream, dest) {
     srcStream = srcStream
