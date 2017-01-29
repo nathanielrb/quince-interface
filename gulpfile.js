@@ -39,9 +39,24 @@ gulp.task('fonts', function() {
         .pipe(gulp.dest('dist/fonts'));
 });
 
+var editorJs = [
+    'googlediff/javascript/diff_match_patch_uncompressed',
+     'clunderscore/clunderscore',
+    'prismjs/components/prism-core',
+    'cledit/scripts/cleditCore',
+  'cledit/scripts/cleditHighlighter',
+  'cledit/scripts/cleditKeystroke',
+  'cledit/scripts/cleditMarker',
+  'cledit/scripts/cleditSelectionMgr',
+  'cledit/scripts/cleditUndoMgr',
+  'cledit/scripts/cleditUtils',
+  'cledit/scripts/cleditWatcher'];
+editorJs.map(require.resolve);
+
+
 gulp.task('js', function() {
     browserify({
-        entries: 'src/js/app.js',
+        entries: editorJs.push('src/js/app.js'),
         debug: true
     })
     .transform(partialify)
@@ -63,28 +78,13 @@ gulp.task('js', function() {
     .pipe(connect.reload());
 });
 
-var editorJs = [
-    'googlediff/javascript/diff_match_patch_uncompressed',
-     'clunderscore/clunderscore',
-    'prismjs/components/prism-core',
-    'cledit/scripts/cleditCore',
-  'cledit/scripts/cleditHighlighter',
-  'cledit/scripts/cleditKeystroke',
-  'cledit/scripts/cleditMarker',
-  'cledit/scripts/cleditSelectionMgr',
-  'cledit/scripts/cleditUndoMgr',
-  'cledit/scripts/cleditUtils',
-  'cledit/scripts/cleditWatcher'];
-editorJs.map(require.resolve);
+/*
 
 gulp.task('editor-js', function () {
-  return buildJs(
-    streamqueue({
-      objectMode: true
-    },
-      gulp.src(editorJs),
-     ), 'editor-min.js')
-})
+     gulp.src(editorJs)
+        .pipe(gulp.dest('dist/js'));
+*/
+
 
 gulp.task('start-server', function() {
     connect.server({ root: 'dist', livereload: true });
