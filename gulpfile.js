@@ -81,13 +81,14 @@ var editorJs = [
 editorJs.map(require.resolve);
 
 gulp.task('editor-js', function() {
-    scripts = editorJs.map(function(script){ return 'node_modules/' + script + '.js' });
+    var scripts = editorJs.map(function(script){ return 'node_modules/' + script + '.js' });
 
     gulp.src(scripts)
-        .pipe(gulp.dest('dist/js'));
+    .pipe(concat('editor.js'))
+    .pipe(gulp.dest('dist/js'));
 });
 
-var streamqueue = require('streamqueue');
+
 
 /*
 gulp.task('editor-js', function () {
