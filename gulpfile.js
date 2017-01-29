@@ -80,7 +80,7 @@ var editorJs = [
   'cledit/scripts/cleditUtils',
   'cledit/scripts/cleditWatcher',
   'src/js/components/github-file-editor/editor.js', 
-  'src/js/components/github-file-editor/mdGrammar.js'];];
+  'src/js/components/github-file-editor/mdGrammar.js'];
 editorJs.map(require.resolve);
 
 gulp.task('editor-js', function() {
