@@ -46,7 +46,7 @@ gulp.task('js', function() {
     browserify({
         entries: 'src/js/app.js', 
         debug: true
-    }))
+    })
     .transform(partialify)
     .bundle()
     .on('error', function (err) {
