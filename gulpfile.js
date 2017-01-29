@@ -46,7 +46,7 @@ gulp.task('js', function() {
     browserify({
         entries: ['src/js/app.js', 
                   'src/js/components/github-file-editor/editor.js', 
-                  'src/js/components/github-file-editor/mdGrammar.js']
+                  'src/js/components/github-file-editor/mdGrammar.js'],
         debug: true
     })
     .transform(partialify)
