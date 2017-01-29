@@ -8,6 +8,7 @@ var browserify = require('browserify');
 var partialify = require('partialify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
+var cledit = require('cledit');
 
 gulp.task('html', function() {
     gulp.src('src/*.html')
@@ -61,6 +62,34 @@ gulp.task('js', function() {
     .pipe(gulp.dest('dist/js'))
     .pipe(connect.reload());
 });
+
+/* from classeur */
+
+var appVendorJs = [
+  'googlediff/javascript/diff_match_patch_uncompressed'
+].map(require.resolve);
+appVendorJs.push(path.join(path.dirname(require.resolve('prismjs/components/prism-core')), 'prism-!(*.min).js'));
+
+var templateCacheSrc = ['src/**/*.{html,md,json}']
+var appJsSrc = ['src/app.js', 'src/!(workers)/**/*.js']
+
+gulp.task('app-js', function () {
+  return buildJs(
+    streamqueue({
+      objectMode: true
+    },
+      gulp.src(appVendorJs),
+      gulp.src(appJsSrc),
+      gulp.src(templateCacheSrc)
+        .pipe(templateCache({
+          module: 'classeur.templates',
+          standalone: true
+        }))
+    ), 'app-min.js')
+})
+
+/* end from classeur */
+
 
 gulp.task('start-server', function() {
     connect.server({ root: 'dist', livereload: true });
