@@ -55,6 +55,11 @@ module.exports = {
             if (this.path === '') this.path = '/';
 
             this.getFiles();
+        },
+        editable: function(file){
+            var re = /(?:\.([^.]+))?$/;
+            var ext = re.exec(file.path)[1];
+            return ext === "md";
         }
     },
     watch: {
