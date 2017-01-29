@@ -31,7 +31,6 @@ module.exports = {
         },
         save: function(){
             console.log("saving file to github...");
-            this.content = this.editorElt.innerHTML;
         },
         initEditor: function(){
             this.editorElt = document.querySelector('#editor-content'); 
@@ -42,6 +41,8 @@ module.exports = {
                     this.editor = this.initMdEditor();
                     break;
                 case "html":
+                case "yaml":
+                case "yml":
                     console.log("loading html editor");
                     break;
                 default:
