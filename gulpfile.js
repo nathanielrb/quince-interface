@@ -84,8 +84,7 @@ editorJs.map(require.resolve);
 gulp.task('editor-js', function() {
     var scripts = editorJs
     .map(function(script){ return 'node_modules/' + script + '.js' })
-    .concat(['src/js/components/github-file-editor/editor.js', 
-             'src/js/components/github-file-editor/mdGrammar.js']);
+    .concat(['src/js/components/github-file-editor/mdGrammar.js']);
     
     buildJs(scripts, 'editor.js', 'dist/js');
 /*
