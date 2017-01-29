@@ -80,17 +80,23 @@ var editorJs = [
   'cledit/scripts/cleditWatcher'];
 editorJs.map(require.resolve);
 
+gulp.task('editor-js', function() {
+    scripts = editorJs.map(function(script){ return 'node_modules/' + script + '.js' });
+
+    gulp.src(scripts)
+        .pipe(gulp.dest('dist/js'));
+});
+
 var streamqueue = require('streamqueue');
 
-
-
+/*
 gulp.task('editor-js', function () {
     streamqueue({ objectMode: true },
                     gulp.src(editorJs))
         .pipe(source('editor.min.js'))
         .pipe(gulp.dest('dist/js'))
 });
-
+*/
 /*
 gulp.task('editor-js', function() {
     return browserify({entries: editorJs.map(function(file){return file+'.js'}) })
