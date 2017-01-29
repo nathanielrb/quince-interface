@@ -43,13 +43,8 @@ gulp.task('fonts', function() {
 
 
 gulp.task('js', function() {
-    var scripts = ['src/js/app.js', 
-                  'src/js/components/github-file-editor/editor.js', 
-                  'src/js/components/github-file-editor/mdGrammar.js'];
-    
-    gulp.src(scripts)
-    .pipe(browserify({
-        
+    browserify({
+        entries: 'src/js/app.js', 
         debug: true
     }))
     .transform(partialify)
@@ -83,7 +78,9 @@ var editorJs = [
   'cledit/scripts/cleditSelectionMgr',
   'cledit/scripts/cleditUndoMgr',
   'cledit/scripts/cleditUtils',
-  'cledit/scripts/cleditWatcher'];
+  'cledit/scripts/cleditWatcher',
+  'src/js/components/github-file-editor/editor.js', 
+  'src/js/components/github-file-editor/mdGrammar.js'];];
 editorJs.map(require.resolve);
 
 gulp.task('editor-js', function() {
