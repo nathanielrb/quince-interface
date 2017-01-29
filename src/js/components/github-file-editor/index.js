@@ -17,6 +17,7 @@ module.exports = {
         getFile: function(){
             vm = this;
             console.log("getting file from github");
+            this.content = "FILE";
         },
         close: function(){},
         save: function(){},
