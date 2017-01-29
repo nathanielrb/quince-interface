@@ -10,7 +10,7 @@ module.exports = {
     computed: {
         ext: function(){
          var re = /(?:\.([^.]+))?$/;
-         return re.exec(file.path)[1];   
+         return re.exec(this.path)[1];   
         }
     },
     methods: {
