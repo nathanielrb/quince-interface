@@ -39,19 +39,7 @@ gulp.task('fonts', function() {
         .pipe(gulp.dest('dist/fonts'));
 });
 
-var editorJs = [
-    'googlediff/javascript/diff_match_patch_uncompressed',
-     'clunderscore/clunderscore',
-    'prismjs/components/prism-core',
-    'cledit/scripts/cleditCore',
-  'cledit/scripts/cleditHighlighter',
-  'cledit/scripts/cleditKeystroke',
-  'cledit/scripts/cleditMarker',
-  'cledit/scripts/cleditSelectionMgr',
-  'cledit/scripts/cleditUndoMgr',
-  'cledit/scripts/cleditUtils',
-  'cledit/scripts/cleditWatcher'];
-editorJs.map(require.resolve);
+
 
 
 gulp.task('js', function() {
@@ -78,7 +66,53 @@ gulp.task('js', function() {
     .pipe(connect.reload());
 });
 
+var editorJs = [
+    'googlediff/javascript/diff_match_patch_uncompressed',
+     'clunderscore/clunderscore',
+    'prismjs/components/prism-core',
+    'cledit/scripts/cleditCore',
+  'cledit/scripts/cleditHighlighter',
+  'cledit/scripts/cleditKeystroke',
+  'cledit/scripts/cleditMarker',
+  'cledit/scripts/cleditSelectionMgr',
+  'cledit/scripts/cleditUndoMgr',
+  'cledit/scripts/cleditUtils',
+  'cledit/scripts/cleditWatcher'];
+editorJs.map(require.resolve);
 
+function buildJs (srcStream, dest) {
+  if (isDebug) {
+    var sourcemaps = require('gulp-sourcemaps')
+    srcStream = srcStream
+      .pipe(sourcemaps.init())
+      .pipe(concat(dest, {
+        newLine: ';'
+      }))
+      .pipe(sourcemaps.write())
+  } else {
+    srcStream = srcStream
+      .pipe(size({
+        // showFiles: true
+      }))
+      .pipe(ngAnnotate())
+      .pipe(uglify())
+      .pipe(concat(dest, {
+        newLine: ';'
+      }))
+  }
+  return srcStream.pipe(gulp.dest('public'))
+}
+
+gulp.task('app-js', function () {
+  return buildJs(
+    streamqueue({
+      objectMode: true
+    },
+      gulp.src(appVendorJs),
+      gulp.src(appJsSrc),
+     
+    ), 'app-min.js')
+})
 
 gulp.task('editor-js', function () {
      gulp.src(editorJs)
