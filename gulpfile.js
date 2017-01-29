@@ -43,18 +43,24 @@ gulp.task('fonts', function() {
 
 
 gulp.task('js', function() {
+    var scripts = ['src/js/app.js', 
+                  'src/js/components/github-file-editor/editor.js', 
+                  'src/js/components/github-file-editor/mdGrammar.js'];
+    
+     buildJs(scripts, 'app.js', 'dist/js');
+    /*
     browserify({
         entries: ['src/js/app.js', 
                   'src/js/components/github-file-editor/editor.js', 
                   'src/js/components/github-file-editor/mdGrammar.js'],
         debug: true
     })
-  /*  .transform(partialify)
+    .transform(partialify)
     .bundle()
     .on('error', function (err) {
         console.log(err.toString());
         this.emit("end");
-    })*/
+    })
     .pipe(concat('app.min.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
@@ -66,6 +72,7 @@ gulp.task('js', function() {
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('dist/js'))
     .pipe(connect.reload());
+    */
 });
 
 var editorJs = [
@@ -84,12 +91,18 @@ editorJs.map(require.resolve);
 
 gulp.task('editor-js', function() {
     var scripts = editorJs.map(function(script){ return 'node_modules/' + script + '.js' });
-
+    buildJs(scripts, 'editor.js', 'dist/js');
+/*
     gulp.src(scripts)
     .pipe(concat('editor.js'))
-    .pipe(gulp.dest('dist/js'));
+    .pipe(gulp.dest('dist/js'));*/
 });
 
+var buildJs = function(scripts, filename, dest){
+     gulp.src(scripts)
+    .pipe(concat(filename))
+    .pipe(gulp.dest(dest));
+}
 
 
 /*
