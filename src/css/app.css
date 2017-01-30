@@ -6,7 +6,9 @@ body {
     margin-bottom: 30px;
 }
 
-textarea {
-  width: 80%;
-    height: 900px;
+a {
+    cursor: pointer; 
+}
+label {
+    display: block;
 }

@@ -8,7 +8,7 @@ var browserify = require('browserify');
 var partialify = require('partialify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
-
+//var OAuth = require('oauth2-client-js');
 
 gulp.task('html', function() {
     gulp.src('src/*.html')
@@ -68,24 +68,26 @@ gulp.task('js', function() {
     
 });
 
-var editorJs = [
+var includeJs = [
     'googlediff/javascript/diff_match_patch_uncompressed',
-     'clunderscore/clunderscore',
+    'clunderscore/clunderscore',
     'prismjs/components/prism-core',
     'cledit/scripts/cleditCore',
-  'cledit/scripts/cleditHighlighter',
-  'cledit/scripts/cleditKeystroke',
-  'cledit/scripts/cleditMarker',
-  'cledit/scripts/cleditSelectionMgr',
-  'cledit/scripts/cleditUndoMgr',
-  'cledit/scripts/cleditUtils',
-  'cledit/scripts/cleditWatcher'];
-editorJs.map(require.resolve);
+    'cledit/scripts/cleditHighlighter',
+    'cledit/scripts/cleditKeystroke',
+    'cledit/scripts/cleditMarker',
+    'cledit/scripts/cleditSelectionMgr',
+    'cledit/scripts/cleditUndoMgr',
+    'cledit/scripts/cleditUtils',
+    'cledit/scripts/cleditWatcher'    
+];
+includeJs.map(require.resolve);
 
 gulp.task('editor-js', function() {
-    var scripts = editorJs
+    var scripts = includeJs
     .map(function(script){ return 'node_modules/' + script + '.js' })
-    .concat(['src/js/components/github-file-editor/mdGrammar.js']);
+	.concat(['src/js/components/github-file-editor/mdGrammar.js',
+		'/oauth2-client-js/dist/oauth2-client.js']);
     
     buildJs(scripts, 'editor.js', 'dist/js');
 /*

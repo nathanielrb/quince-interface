@@ -6,27 +6,39 @@
 
     <link rel="stylesheet" href="css/app.min.css">
 </head>
+
 <body>
-<div id="container">
+  <div id="container">
     <div class="row">
-        <div class="col-md-3 col-md-offset-3">
-            <form id="changeRepoForm" @submit.prevent="changeRepo()" class="form-inline">
-                <div class="form-group">
-                    <label for="fullRepoName">Full Repo Name</label>
-                    <input type="text" name="fullRepoName" v-model="fullRepoName" class="form-control">
-                </div>
-                <input type="submit" class="btn btn-default" value="Get repo filesystem!">
-            </form>
+      <div class="col-md-3 col-md-offset-1">
+	<h1>cm editor</h1>
+	
+	<div class="alert alert-danger" v-if="errorMsg">Error: {{errorMsg}}</div>
+
+	<div v-if="!loggedIn">
+	  <button  v-on:click="login">Log In With GitHub</button>
+	</div>
+
+	<div v-if="loggedIn">
+
+	  <label>Repo</label>
+	  <select v-model="repo">
+	    <option v-for="repo in repos">{{repo}}</option>
+	  </select>
+
+	  <div v-if="repo">
             <hr>
             <github-file-explorer :username="username" :repo="repo" v-on:edit="editFile"></github-file-explorer>
-        </div>
-        <div class="col-md-5">
-            <github-file-editor :file="fileToEdit"></github-file-editor>
-        </div>
+	  </div>
+	</div>
+	</div>
+      
+      <div class="col-md-5">
+        <github-file-editor :file="fileToEdit" :username="username" :repo="repo" :token="token"></github-file-editor>
+      </div>
     </div>
-
+  </div>
 </div>
-
     
     <script src="js/app.min.js"></script>
     <script src="js/editor.js"></script>

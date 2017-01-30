@@ -1,4 +1,6 @@
 <div id="editor" v-if="file">
+  <div class="alert alert-danger" v-if="errorMsg">Error: {{errorMsg}}</div>
+  <div class="alert alert-danger" v-if="msg">Error: {{msg}}</div>
   <div class="banner">{{ file.path }}</div>
   <nav class="navbar navbar-default">
     <div class="container-fluid">
@@ -8,5 +10,5 @@
       </div>
     </div>
   </nav>
-  <pre id="editor-content">{{content}}</pre>
+  <div id="editor-content">{{content}}</div>
 </div>  
