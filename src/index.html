@@ -10,31 +10,35 @@
 <body>
   <div id="container">
     <div class="row">
-      <div class="col-md-3 col-md-offset-1">
-	<h1>cm editor</h1>
-	
+      <div class="logo-panel col-md-1">
+	<h1>Quince</h1>
+      </div>
+      <div class="side-panel col-md-3">
+
 	<div class="alert alert-danger" v-if="errorMsg">Error: {{errorMsg}}</div>
 
-	<div v-if="!loggedIn">
+	<div v-if="!loggedIn" class="login">
 	  <button  v-on:click="login">Log In With GitHub</button>
 	</div>
 
 	<div v-if="loggedIn">
 
-	  <label>Repo</label>
-	  <select v-model="repo">
-	    <option v-for="repo in repos">{{repo}}</option>
-	  </select>
+	  <div class="username">{{username}}</div>
+
+	  <div class="select-repo">
+	    <select v-model="repo">
+	      <option v-for="repo in repos">{{repo}}</option>
+	    </select>
+	  </div>
 
 	  <div v-if="repo">
-            <hr>
             <github-file-explorer :username="username" :repo="repo" v-on:edit="editFile"></github-file-explorer>
 	  </div>
 	</div>
 	</div>
       
-      <div class="col-md-5">
-        <github-file-editor :file="fileToEdit" :username="username" :repo="repo" :token="token"></github-file-editor>
+      <div class="edit-panel col-md-7">
+        <github-file-editor :file-url="fileUrl" :username="username" :repo="repo" :token="token"></github-file-editor>
       </div>
     </div>
   </div>

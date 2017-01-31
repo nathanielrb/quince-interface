@@ -9,7 +9,7 @@ var vm = new Vue({
         username: '',
 	repos: ['a','b'],
         repo: null,
-        fileToEdit: null,
+        fileUrl: null,
 	github: null,
 	loggedIn: false,
 	github_params: {
@@ -84,9 +84,9 @@ var vm = new Vue({
             console.log("repo:", this.repo);
             console.groupEnd("Vue Data");
         },
-        editFile: function(file){
-            console.log("edit " + file.path);
-           this.fileToEdit = file;
+        editFile: function(fileUrl){
+            console.log("edit " + fileUrl);
+            this.fileUrl = fileUrl;
         },
 	login: function(){
 	    var github_uri = "https://github.com/login/oauth/authorize?"

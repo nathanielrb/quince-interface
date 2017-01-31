@@ -1,5 +1,8 @@
+html,body {
+    height: 100%;
+}
 body {
-    padding-top: 30px;
+    background-color: #ccc;
 }
 
 #changeRepoForm {
@@ -9,6 +12,124 @@ body {
 a {
     cursor: pointer; 
 }
+a:hover {
+    text-decoration: none;
+}
 label {
     display: block;
+}
+
+.cover {
+    padding: 1em 0;
+}
+.cover img {
+    width: 100%;
+}
+
+/* Headers */
+
+h1 {
+    font-size: 16pt;
+    font-weight: bold;
+}
+h2 {
+    font-size: 16pt;
+    font-weight: normal;
+}
+
+/* Nav */
+
+.side-panel .login {
+    margin-top: 18pt;
+}
+.side-panel .username {
+    font-weight: bold;
+    margin-top: 18pt;
+}
+.select-repo {
+    margin: 1.5em 0;
+}
+.side-panel select {
+    padding: .6em;
+    font-size: .9em;
+    color: gray;
+    background: #ccc;
+    font-weight: bold;
+}
+ul.files, ul.breadcrumbs {
+    padding: 0;
+}
+ul.breadcrumbs li {
+    clear: both;
+    list-style: none;
+    display: inline;
+}
+ul.files li {
+    list-style: none;
+    padding: 0.6em 1em;
+}
+ul.files li.file {
+    background: #ddd;
+    border-top: 1px solid #ddd;
+}
+ul.files li.metadata {
+    background: beige;
+    border-top: 1px solid #ddd;
+}
+ul.files li.directory {
+    background: #ddd;
+    border-top: 1px solid #eee;
+}
+
+
+/* Panels */
+
+#container, .row, #editor {
+}
+.logo-panel {
+
+}
+.side-panel {
+
+}
+.edit-panel {
+    padding: 0;
+    margin: 2em 0;
+}
+#editor {
+    background-color: white;
+}
+#editor .banner {
+    margin: 0;
+    padding: 1em;
+    background: beige;
+}
+#editor .banner input {
+    font-size: 16pt;
+    background: beige;
+    border: none;
+    padding: .5em;
+    width: 50%;
+}
+#editor .banner input:hover {
+    background: #ddd;
+}
+#editor .banner .buttons {
+    float: right;
+    
+}
+#editor-toolbar {
+    background: #cc9;
+}
+#editor-toolbar button {
+    background: white;
+    border: 1px solid gray;
+    padding: 4px 8px;
+    display: inline-block;
+    margin: 4px;
+    font-size: small;
+    font-weight: bold;
+}
+#editor-content {
+    padding: 2em;
 }

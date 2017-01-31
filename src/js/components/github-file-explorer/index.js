@@ -3,7 +3,9 @@ module.exports = {
     data: function() {
         return {
             path: '/',
-            files: []
+            files: [],
+	    newCoverImage: null,
+	    newCoverImageForm: null
         };
     },
     props: {
@@ -36,7 +38,24 @@ module.exports = {
                     }
                 }
             });
-        }
+        },
+	breadcrumbs: function(){
+	    return this.path.split('/')
+		.filter(function(e){ return e != '' })
+		.reduce(function(prevVal, elem, index, array){
+		    return prevVal.concat([  { 
+			crumb: elem,
+			path: prevVal.length > 0 ? prevVal[prevVal.length - 1].path + '/' + elem : elem
+		    } ]);
+		}, [{crumb: '..', path: '/'}]);
+	},
+	coverImage: function(){
+
+	    var cover = this.files.filter(function(file){
+		return file.name === "cover.jpg";
+	    });
+	    return cover ? cover[0] : null;
+	}
     },
     methods: {
         getFiles: function() {
@@ -60,7 +79,10 @@ module.exports = {
             var re = /(?:\.([^.]+))?$/;
             var ext = re.exec(file.path)[1];
             return ext === "md";
-        }
+        },
+	changeCoverImage: function(){
+	    this.newCoverImageForm = true;
+	}
     },
     watch: {
         repo: function(newVal, oldVal) {
