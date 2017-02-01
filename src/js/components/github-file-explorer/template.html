@@ -2,45 +2,48 @@
   <div class="col-md-12">
     
     <ul class="breadcrumbs">
-      <li class="crumb"  v-for="(index, crumb) in breadcrumbs">
-	<a v-on:click="changePath(crumb.path)">{{crumb.crumb}}</a> / 
+      <li class="crumb" v-for="(index, crumb) in breadcrumbs">
+	<template v-if="index < breadcrumbs.length - 1">
+	  <a v-on:click="changePath(crumb.path)">{{crumb.crumb}}</a> /
+	</template>
+	<b v-if="index == breadcrumbs.length - 1">{{crumb.crumb}}</b>
       </li>
     </ul>
 
       <ul class="files">
-      <template v-for="file in sortedFiles">
-	<li class="metadata"  v-if="file.name === '_book.yml'">
-            <a class="metadata file">
-              <i class="fa fa-th-list"></i>
-	      Metadata
+	<template v-for="file in sortedFiles.filter(isViewable)">
+	  <li class="metadata"  v-if="file.name === '_book.yml'">
+	      <a class="file" v-on:click="$emit('edit', file.url)">
+		<i class="fa fa-th-list"></i>
+		Metadata
             </a>
-	</li>
-
-	<li class="file" v-if="editable(file)">
+	  </li>
+	  
+	  <li class="file" v-if="isContent(file)">
 	    <a class="file" v-on:click="$emit('edit', file.url)">
               <i class="fa fa-file-o"></i>
               {{ file.name }}
             </a>
-	</li>
-	
-	<li class="directory" v-if="file.type === 'dir'">
+	  </li>
+	  
+	  <li class="directory" v-if="isDir(file.type)">
             <span class="directory" >
               <i class="fa fa-folder-o"></i>
               <a v-on:click="changePath(file.path)">{{ file.name }}</a>
             </span>
-	</li>
-      </template>
-
-      <li><a><i class="fa fa-plus"></i> file</a></li>
-    </ul>
-
+	  </li>
+	</template>
+	
+	<li><a><i class="fa fa-plus"></i> file</a></li>
+      </ul>
+      
     
-    <div v-if="coverImage" class="col-md-6 cover" id="cover-image">
-      <a v-on:click="changeCoverImage()">
-	<img v-bind:src="coverImage.download_url" alt="cover"/>
-      </a>
-      <form v-if="newCoverImageForm" id="change-cover-image"><input v-model="newCoverImage" type="file"></form>
-    </div>
-
+      <div v-if="coverImage" class="col-md-6 cover" id="cover-image">
+	<a v-on:click="changeCoverImage()">
+	  <img v-bind:src="coverImage.download_url" alt="cover"/>
+	</a>
+	<form v-if="newCoverImageForm" id="change-cover-image"><input v-model="newCoverImage" type="file"></form>
+      </div>
+      
   </div>
 </div>

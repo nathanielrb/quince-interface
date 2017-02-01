@@ -47,7 +47,7 @@ module.exports = {
 			crumb: elem,
 			path: prevVal.length > 0 ? prevVal[prevVal.length - 1].path + '/' + elem : elem
 		    } ]);
-		}, [{crumb: '..', path: '/'}]);
+		}, [{crumb: '..', path: ''}]);
 	},
 	coverImage: function(){
 
@@ -68,6 +68,7 @@ module.exports = {
         changePath: function(path) {
             this.path = '/' + path;
             this.getFiles();
+	    window.location.hash = '#' + this.repo + this.path;
         },
         goBack: function() {
             this.path = this.path.split('/').slice(0, -1).join('/');
@@ -75,11 +76,28 @@ module.exports = {
 
             this.getFiles();
         },
-        editable: function(file){
+	ext: function(file){
             var re = /(?:\.([^.]+))?$/;
-            var ext = re.exec(file.path)[1];
-            return ext === "md";
+            return re.exec(file.path)[1];
+	},
+	isDir: function(file){
+	    return file.type === 'dir'
+	    	&& file.name[0] != '_';
+	},
+        isContent: function(file){
+	    console.log(file);
+	    return ["md","html"].indexOf(this.ext(file)) > -1
+		&& file.name[0] != '_';
         },
+	isMeta: function(file){
+	    console.log(file);
+	    return ["yml","yaml","json"].indexOf(this.ext(file)) > -1;
+        },
+	isViewable: function(file){
+	    return this.isContent(file)
+		|| this.isMeta(file)
+		|| this.isDir(file);
+	},
 	changeCoverImage: function(){
 	    this.newCoverImageForm = true;
 	}
@@ -91,6 +109,16 @@ module.exports = {
         }
     },
     created: function() {
-        if (this.username && this.repo) this.getFiles();
+
+	var hash = window.location.hash;
+	if(hash != ''){
+	    var path = hash.substr(1).split('/');
+	    this.path = '/' + path.slice(1).join('/');
+	}
+
+        if (this.username && this.repo)
+	    this.getFiles();
+	else
+	    console.log("not getting files");
     }
 };

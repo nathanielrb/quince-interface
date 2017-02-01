@@ -7,7 +7,8 @@ module.exports = {
             editorElt: null,
 	    msg: null,
 	    errorMsg: null,
-	    file: null
+	    file: null,
+	    filename: null,
         };
     },
     props: ['fileUrl', 'token', 'repo', 'username'],
@@ -17,7 +18,16 @@ module.exports = {
 		var re = /(?:\.([^.]+))?$/;
 		return re.exec(this.file.path)[1];
 	    }
-        }
+        },
+	isMarkdown: function(){
+	    return this.ext === "md";
+	},
+	isHtml: function(){
+	    return this.ext === "html";
+	},
+	isMeta: function(){
+	    return this.ext === "yml" || this.ext === "yaml";
+	}
     },
     methods: {
         getFile: function(){
@@ -51,30 +61,72 @@ module.exports = {
 	clearErrorMsg: function(){
 	    this.errorMsg = null;
 	},
+	deleteFile: function(callback){
+	    var vm = this;
+	    return function(){
+		var uri =  'https://api.github.com/repos/'
+		    + vm.username + '/'
+		    + vm.repo + '/contents/'
+		    + path + '?access_token=' + vm.token;
+		
+		console.log("Deleting file on Github...: " + uri);
+		
+		var params = {
+		    "message": "Deleted from Quince.",
+		    "path": path,
+		    "sha": sha
+		}
+		
+		console.log("DELETING ");
+		console.log(params);
+		vm.$http.delete(uri,params)
+		    .then(function(response){
+			vm.msg = response.data.message;
+			console.log(response);
+			if(callback) callback();
+		    },
+			  function(response){
+			      vm.errorMsg = response.data.message;
+			      console.log(response);
+			  });
+	    }
+	},
         save: function(){
+	    var callback = null;
             this.content = this.editor.getContent();
 	    console.log(this.content);
-	    
+
+	    var newpath = this.filename != this.file.name
+		? this.file.path.substr(0,this.file.path.lastIndexOf('/'))
+		+ '/' + this.filename
+		: null;
+
 	    var uri =  'https://api.github.com/repos/'
 		+ this.username + '/'
 		+ this.repo + '/contents/'
-		+ this.file.path + '?access_token=' + this.token;
+		+ (newpath ? newpath : this.file.path) + '?access_token=' + this.token;
 
-	    console.log("Saving file to github...: " + uri);
-
-	    var vm = this;
 	    var params = {
 		"message": "Edited from Quince.",
-		"path": vm.file.path,
-		"content": btoa(unescape(encodeURIComponent(vm.content))),
-		"sha": vm.file.sha
+		"path": this.file.path,
+		"content": btoa(unescape(encodeURIComponent(this.content)))
 	    }
 
+	    if(!newpath)
+		params["sha"] = this.file.sha;
+		
+	    var callback =
+		newpath
+		? this.deleteFile // this.deleteFile(this.file.path, this.file.sha)
+		: null;
+
+	    var vm = this;
 	    this.$http.put(uri,params)
 		.then(function(response){
 		    vm.msg = "Saved. Updated sha: " + response.data.content.sha;
 		    vm.file.sha = response.data.content.sha;
 		    console.log(response);
+		    callback();
 		},
 		      function(response){
 			  vm.errorMsg = response.data.message;

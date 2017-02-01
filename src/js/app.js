@@ -7,27 +7,37 @@ var vm = new Vue({
     data: {
         fullRepoName: '',
         username: '',
-	repos: ['a','b'],
+	repos: null,
         repo: null,
         fileUrl: null,
 	github: null,
 	loggedIn: false,
-	github_params: {
+	githubParams: {
 	    id: 'efe3f24dd42bf7881928',
 	    redirect_uri: 'http://localhost:8080',
-	    state: 'bobo'
+	    state: 'bobo',
+	    gateway: 'http://localhost:9999/authenticate/'
 	},
 	token: null,
 	errorMsg: null
     },
     created: function(){
-	
-	var code = this.getParameter('code'); //window.location.href.match(/\?code=(.*)/);
+	var hash = window.location.hash;
+	if(hash != ''){
+	    var path = hash.substr(1).split('/');
+	    this.repo = path[0];
+	}
+	    
+	var code = this.getParameter('code');
 
-	history.replaceState({},window.document.title, '/');
+	history.replaceState({},window.document.title, '/' + hash);
 	
-	if(code){
-	    var url = 'http://localhost:9999/authenticate/' + code;
+	if(code)
+	    this.getGithubToken(code);
+    },
+    methods: {
+	getGithubToken: function(code){
+	    var url = this.githubParams.gateway + code;
 	    var vm = this;
 	    this.$http.get(url,
 			   function(data){
@@ -44,9 +54,7 @@ var vm = new Vue({
 				   console.log("Error logging in: " + data.error);
 			       }
 			   });
-	}
-    },
-    methods: {
+	},
 	getUserName: function(callback){
 	    var vm = this;
 	    this.$http.get('https://api.github.com/user?'
@@ -73,26 +81,15 @@ var vm = new Vue({
 			vm.errorMsg = data.responseText;
 		    });
 	},
-        changeRepo: function() {
-            var splitData = this.fullRepoName.split('/');
-            this.username = splitData[0];
-            this.repo = splitData[1];
-
-            console.group("Vue Data");
-            console.log("fullRepoName:", this.fullRepoName);
-            console.log("username:", this.username);
-            console.log("repo:", this.repo);
-            console.groupEnd("Vue Data");
-        },
         editFile: function(fileUrl){
             console.log("edit " + fileUrl);
             this.fileUrl = fileUrl;
         },
-	login: function(){
+	loginGithub: function(){
 	    var github_uri = "https://github.com/login/oauth/authorize?"
-		+ 'client_id=' + this.github_params.id
-		+ '&redirect_uri=' + this.github_params.redirect_uri
-		+ '&state=' + this.github_params.state
+		+ 'client_id=' + this.githubParams.id
+		+ '&redirect_uri=' + this.githubParams.redirect_uri + encodeURIComponent(window.location.hash)
+		+ '&state=' + this.githubParams.state
 		+'&scope=repo';
 
 	    window.location.href = github_uri;

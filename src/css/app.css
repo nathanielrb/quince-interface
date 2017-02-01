@@ -111,17 +111,22 @@ ul.files li.directory {
     padding: .5em;
     width: 50%;
 }
+#editor .banner h2 {
+    font-size: 16pt;
+    padding: .5em;
+    margin: 0;
+    width: 50%;
+}
 #editor .banner input:hover {
     background: #ddd;
 }
 #editor .banner .buttons {
-    float: right;
     
 }
-#editor-toolbar {
+.editor-toolbar {
     background: #cc9;
 }
-#editor-toolbar button {
+.editor-toolbar button {
     background: white;
     border: 1px solid gray;
     padding: 4px 8px;
