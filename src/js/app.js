@@ -23,17 +23,26 @@ var vm = new Vue({
     },
     created: function(){
 	var hash = window.location.hash;
-	if(hash != ''){
+
+	var code = this.getParameter('code');
+	
+	if(code){
+	    history.replaceState({},window.document.title, '/' + hash);
+	    this.getGithubToken(code);
+	}	
+
+	if(null && hash != '' && hash != '#'){
 	    var path = hash.substr(1).split('/');
 	    this.repo = path[0];
 	}
-	    
-	var code = this.getParameter('code');
 
-	history.replaceState({},window.document.title, '/' + hash);
+	var token = sessionStorage.getItem('token');
+
+	if(token){
+	    this.token = token;
+	    this.getUserName(this.getUserRepos);
+	}
 	
-	if(code)
-	    this.getGithubToken(code);
     },
     methods: {
 	getGithubToken: function(code){
@@ -42,16 +51,13 @@ var vm = new Vue({
 	    this.$http.get(url,
 			   function(data){
 			       if(data.token){
-				   this.loggedIn = true;
-				   this.token = data.token;
-				   console.log("Logged in: " + this.token);
-
-				   vm.getUserName(vm.getUserRepos);
+				   vm.token = data.token;
+				   sessionStorage.setItem('token', vm.token);
+				   
 			       }
 			       else{
-				   vm.loggedIn = false;
+				   vm.token = null;
 				   vm.errorMsg = data.error;
-				   console.log("Error logging in: " + data.error);
 			       }
 			   });
 	},
@@ -67,7 +73,6 @@ var vm = new Vue({
 	},
 	getUserRepos: function(){
 	    var vm = this;
-	    console.log("Getting user repos...");
 	    this.$http.get('https://api.github.com/user/repos?'
 			   + 'access_token=' + this.token)
 		.then(
@@ -82,9 +87,17 @@ var vm = new Vue({
 		    });
 	},
         editFile: function(fileUrl){
-            console.log("edit " + fileUrl);
             this.fileUrl = fileUrl;
         },
+	removeFile: function(file){
+	    this.$emit('remove-file', file);
+	},
+	addFile: function(file){
+	    this.$emit('add-file', file);
+	},
+	changeEditingFile: function(fileUrl){
+	    this.fileUrl = fileUrl;
+	},
 	loginGithub: function(){
 	    var github_uri = "https://github.com/login/oauth/authorize?"
 		+ 'client_id=' + this.githubParams.id

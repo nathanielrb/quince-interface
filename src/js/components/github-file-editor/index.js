@@ -49,7 +49,7 @@ module.exports = {
             //{ headers: {'Accept': 'application/vnd.github.v3.raw'}});
         },
         close: function(){
-            console.log("closing editor");
+	    this.$emit('close');
 	    this.fileUrl = null;
             this.file = null;
 	    this.msg = null;
@@ -62,34 +62,32 @@ module.exports = {
 	    this.errorMsg = null;
 	},
 	deleteFile: function(callback){
-	    var vm = this;
-	    return function(){
-		var uri =  'https://api.github.com/repos/'
-		    + vm.username + '/'
-		    + vm.repo + '/contents/'
-		    + path + '?access_token=' + vm.token;
-		
-		console.log("Deleting file on Github...: " + uri);
-		
-		var params = {
-		    "message": "Deleted from Quince.",
-		    "path": path,
-		    "sha": sha
-		}
-		
-		console.log("DELETING ");
-		console.log(params);
-		vm.$http.delete(uri,params)
-		    .then(function(response){
-			vm.msg = response.data.message;
-			console.log(response);
-			if(callback) callback();
-		    },
-			  function(response){
-			      vm.errorMsg = response.data.message;
-			      console.log(response);
-			  });
+	    var uri =  'https://api.github.com/repos/'
+		+ this.username + '/'
+		+ this.repo + '/contents/'
+		+ this.file.path + '?access_token=' + this.token;
+	    
+	    var params = {
+		"message": "Deleted from Quince.",
+		"path": this.file.path,
+		"sha": this.file.sha
 	    }
+	    
+	    var vm = this;
+	    vm.$http.delete(uri,params)
+		.then(function(response){
+		    vm.msg = response.data.message;
+		    console.log(response);
+
+		    vm.$emit('remove',vm.file)
+			
+		    if(callback)
+			callback();
+		},
+		      function(response){
+			  vm.errorMsg = response.data.message;
+			  console.log(response);
+		      });
 	},
         save: function(){
 	    var callback = null;
@@ -117,21 +115,29 @@ module.exports = {
 		
 	    var callback =
 		newpath
-		? this.deleteFile // this.deleteFile(this.file.path, this.file.sha)
+		? this.deleteFile
 		: null;
 
 	    var vm = this;
 	    this.$http.put(uri,params)
-		.then(function(response){
-		    vm.msg = "Saved. Updated sha: " + response.data.content.sha;
-		    vm.file.sha = response.data.content.sha;
-		    console.log(response);
-		    callback();
-		},
-		      function(response){
-			  vm.errorMsg = response.data.message;
-			  console.log(response);
-		      });
+		.then(
+		    function(response){
+			vm.msg = "Saved. Updated sha: " + response.data.content.sha;
+			vm.file.sha = response.data.content.sha;
+			console.log(response);
+
+			if(newpath)
+			    vm.deleteFile(
+				function(){
+				    vm.file = response.data.content;
+				    vm.$emit('add', vm.file);
+				    vm.$emit('change', vm.file.url);
+				});
+		    },
+		    function(response){
+			vm.errorMsg = response.data.message;
+			console.log(response);
+		    });
 	},
 	initEditor: function(){
             this.editorElt = document.querySelector('#editor-content');

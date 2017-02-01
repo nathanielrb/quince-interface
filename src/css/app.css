@@ -19,11 +19,11 @@ label {
     display: block;
 }
 
-.cover {
-    padding: 1em 0;
+#cover-image img {
+   padding: 1em 0;
 }
-.cover img {
-    width: 100%;
+#cover-image img {
+    width: 120px;
 }
 
 /* Headers */
@@ -49,12 +49,15 @@ h2 {
 .select-repo {
     margin: 1.5em 0;
 }
-.side-panel select {
+.select-repo select {
     padding: .6em;
     font-size: .9em;
     color: gray;
     background: #ccc;
     font-weight: bold;
+}
+ul.breadcrumbs {
+    margin-top: 16pt;
 }
 ul.files, ul.breadcrumbs {
     padding: 0;
@@ -72,6 +75,10 @@ ul.files li.file {
     background: #ddd;
     border-top: 1px solid #ddd;
 }
+ul.files li.file.editing {
+    background: pink;
+}
+
 ul.files li.metadata {
     background: beige;
     border-top: 1px solid #ddd;
@@ -116,6 +123,7 @@ ul.files li.directory {
     padding: .5em;
     margin: 0;
     width: 50%;
+    display: inline-block;
 }
 #editor .banner input:hover {
     background: #ddd;

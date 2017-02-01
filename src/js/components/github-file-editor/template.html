@@ -13,15 +13,19 @@
   <div class="banner">
 
     <input type="text" v-model="filename" v-bind:value="file.name" v-if="isHtml || isMarkdown"/>
-    
-    <h2 v-if="isMeta">{{file.name}}</h2>
+
+    <template v-if="isMeta">
+      <h2>Metadata</h2>
+      <input type="hidden" v-bind:value="file.name" v-model="filename">
+    </template>
     
     <span class="buttons">
       <a v-on:click="save()">
 	<i class="fa fa-save"></i>
 	Save
       </a>
-      <a v-on:click="deleteFile(close)()">
+      <!--<a v-on:click="deleteFile(close)">-->
+	<a class="file" v-on:click="deleteFile">
 	<i class="fa fa-trash"></i>
 	Delete
       </a>
@@ -33,11 +37,11 @@
     </span>
   </div>
 
-  <div id="md-editor-toolbar" class="editor-toolbar" v-if="isMarkdown">
+  <div id="md-editor-toolbar" class="editor-toolbar" v-if="null">
     <button class="toolbar-button">b</button>
   </div>
 
-  <div id="html-editor-toolbar" class="editor-toolbar" v-if="isHtml">
+  <div id="html-editor-toolbar" class="editor-toolbar" v-if="null">
     <button class="toolbar-button">b</button>
   </div>
 
