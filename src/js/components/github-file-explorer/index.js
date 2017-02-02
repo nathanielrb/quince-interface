@@ -51,7 +51,7 @@ module.exports = {
 		.reduce(function(prevVal, elem, index, array){
 		    return prevVal.concat([  { 
 			crumb: elem,
-			path: prevVal.length > 0 ? prevVal[prevVal.length - 1].path + '/' + elem : elem
+			path: prevVal.length > 1 ? prevVal[prevVal.length - 1].path + '/' + elem : elem
 		    } ]);
 		}, [{crumb: '..', path: ''}]);
 	},
@@ -77,10 +77,14 @@ module.exports = {
 		    });
         },
         changePath: function(path) {
-            this.path = path;
+            //this.path = path[0] === '/' ? path.substr(1) : path;
+	    this.path = path;
             this.getFiles();
-	    window.location.hash = '#' + this.repo + this.path;
+	    this.updateHash();
         },
+	updateHash: function(){
+	    window.location.hash = '#' + this.repo + '/' + this.path;
+	},
         goBack: function() {
             this.path = this.path.split('/').slice(0, -1).join('/');
             if (this.path === '') this.path = '/';
