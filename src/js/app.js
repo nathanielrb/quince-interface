@@ -71,6 +71,10 @@ var vm = new Vue({
 		    function(data){
 			vm.username = data.data.login;
 			callback();
+		    },
+		    function(data){
+			vm.token = null;
+			vm.displayError(data.responseText, data);
 		    });
 	},
 	getUserRepos: function(){
