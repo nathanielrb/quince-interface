@@ -26,8 +26,10 @@
     </span>
   </div>
 
-  <div id="md-editor-toolbar" class="editor-toolbar" v-if="null">
-    <button class="toolbar-button">b</button>
+  <div id="md-editor-toolbar" class="editor-toolbar" >
+    <button class="toolbar-button" v-for="btn in buttons" v-on:click="btn.click()">
+      <i class="fa" v-bind:class="btn.icon"></i>
+    </button>
   </div>
 
   <div id="html-editor-toolbar" class="editor-toolbar" v-if="null">

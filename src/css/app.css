@@ -66,6 +66,7 @@ ul.breadcrumbs li {
     clear: both;
     list-style: none;
     display: inline;
+    font-weight: bold;
 }
 ul.files li {
     list-style: none;
@@ -179,11 +180,11 @@ ul.messages li {
     font-size: small;
 }
 ul.messages li.message {
-    color: red;
+    color: gray
     border-top: 1px dotted gray;
 }
 
 ul.messages li.error {
-    border-top: 1px dotted gray;
-    color: gray;
+    border-top: 1px dotted red;
+    color: red;
 }

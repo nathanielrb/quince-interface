@@ -56,11 +56,12 @@ module.exports = {
 		}, [{crumb: '..', path: ''}]);
 	},
 	coverImage: function(){
-
-	    var cover = this.files.filter(function(file){
-		return file.name === "cover.jpg";
-	    });
-	    return cover ? cover[0] : null;
+	    if(this.files){
+		var cover = this.files.filter(function(file){
+		    return file.name === "cover.jpg";
+		});
+		return cover ? cover[0] : null;
+	    }
 	}
     },
     methods: {

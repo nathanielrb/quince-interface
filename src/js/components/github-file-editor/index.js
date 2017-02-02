@@ -3,10 +3,11 @@ module.exports = {
     data: function() {
         return {
             content: null,
-            editor: null,
+            editorSvc: null,
             editorElt: null,
 	    file: null,
 	    filename: null,
+	    buttons: null
         };
     },
     props: ['fileUrl', 'token', 'repo', 'username'],
@@ -77,7 +78,7 @@ module.exports = {
 	},
         save: function(){
 	    var callback = null;
-            this.content = this.editor.getContent();
+            this.content = this.editorSvc.cledit.getContent();
 
 	    var newpath = this.filename != this.file.name
 		? this.file.path.substr(0,this.file.path.lastIndexOf('/'))
@@ -134,7 +135,17 @@ module.exports = {
 		console.log("loading md editor");
 		
 		this.$nextTick(function(){
-                    this.editor = this.initMdEditor();
+		    var editor = this.initMdEditor(); 
+		    var pagedown = new window.Pagedown({input: editor});
+		    pagedown.run();
+
+                    this.editorSvc = {
+			cledit: editor,
+			pagedownEditor: pagedown
+		    }
+
+		    this.buttons = new buttonBar(this.editorSvc);
+
 		});
 		break;
             case "html":

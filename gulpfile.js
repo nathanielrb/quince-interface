@@ -87,6 +87,8 @@ gulp.task('editor-js', function() {
     var scripts = includeJs
     .map(function(script){ return 'node_modules/' + script + '.js' })
 	.concat(['src/js/components/github-file-editor/mdGrammar.js',
+		 'src/js/components/github-file-editor/cledit/pagedown.js',
+		 'src/js/components/github-file-editor/cledit/buttonBar.js',
 		'/oauth2-client-js/dist/oauth2-client.js']);
     
     buildJs(scripts, 'editor.js', 'dist/js');
