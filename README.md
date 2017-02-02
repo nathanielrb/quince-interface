@@ -1,5 +1,5 @@
-# vuejs-github-explorer-blog
-This is the repository for the code from the blog post "Create a Github Explorer Using Vue.js."
+# Qince Interface
 
+This is the editorial interface to Quince, a publishing production platform for PDF and Epub based on Git, Pandoc, LaTeX, and XSLT.
 
-[Read the Tutorial Here](https://scotch.io/tutorials/create-a-github-file-explorer-using-vue-js) by [Alex Sears](https://twitter.com/searsaw)
+Uses the excellent [Cledit](https://github.com/classeur/cledit) Markdown editor by [Benoit Schweblin](http://classeur.io/)
