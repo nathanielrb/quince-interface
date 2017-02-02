@@ -33,7 +33,7 @@ var vm = new Vue({
 	    this.getGithubToken(code);
 	}	
 
-	if(null && hash != '' && hash != '#'){
+	if(hash != '' && hash != '#'){
 	    var path = hash.substr(1).split('/');
 	    this.repo = path[0];
 	}

@@ -77,7 +77,6 @@ module.exports = {
 		    });
         },
         changePath: function(path) {
-            //this.path = path[0] === '/' ? path.substr(1) : path;
 	    this.path = path;
             this.getFiles();
 	    this.updateHash();

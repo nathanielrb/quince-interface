@@ -3,9 +3,9 @@
     <ul class="breadcrumbs">
       <li class="crumb" v-for="(index, crumb) in breadcrumbs">
 	<template v-if="index < breadcrumbs.length - 1">
-	  <a v-on:click="changePath(crumb.path)">{{crumb.crumb}} ({{crumb.path}})</a> /
+	  <a v-on:click="changePath(crumb.path)">{{crumb.crumb}}</a> /
 	</template>
-	<b v-if="index == breadcrumbs.length - 1">{{crumb.crumb}}  ({{crumb.path}})</b>
+	<b v-if="index == breadcrumbs.length - 1">{{crumb.crumb}}</b>
       </li>
     </ul>
 
