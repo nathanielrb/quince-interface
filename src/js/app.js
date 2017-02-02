@@ -19,7 +19,9 @@ var vm = new Vue({
 	    gateway: 'http://localhost:9999/authenticate/'
 	},
 	token: null,
-	errorMsg: null
+	messages: [],
+	errors: [],
+	loading: null
     },
     created: function(){
 	var hash = window.location.hash;
@@ -57,7 +59,7 @@ var vm = new Vue({
 			       }
 			       else{
 				   vm.token = null;
-				   vm.errorMsg = data.error;
+				   vm.displayError(data.error, data);
 			       }
 			   });
 	},
@@ -81,9 +83,7 @@ var vm = new Vue({
 			vm.repos = names;
 		    },
 		    function(data){
-			console.log("error");
-			console.log(data);
-			vm.errorMsg = data.responseText;
+			vm.displayError(data.responseText, data);
 		    });
 	},
         editFile: function(fileUrl){
@@ -118,6 +118,29 @@ var vm = new Vue({
 		    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
 		});
 	    return result;
+	},
+	displayMsg: function(msg){
+	    this.messages.push( msg );
+	    console.log("MSG: "+msg);
+	},
+	displayError: function(msg, obj){
+	    this.errors.push( msg );
+	    console.log("Error: " + msg);
+	    console.log(obj);
+	},
+	clearMsg: function(n){
+	    this.messages.splice(n,1);
+	},
+	clearError: function(n){
+	    this.errors.splice(n,1);
+	},
+	startLoading: function(){
+	    console.log("Loading");
+	    this.loading = true;
+	},
+	doneLoading: function(){
+	    console.log("Done Loading");
+	    this.loading = null;
 	}
     },
     components: {

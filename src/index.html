@@ -10,18 +10,16 @@
 <body>  
   <div id="container">
 
-    <div class="alert alert-danger" v-if="errorMsg">Error: {{errorMsg}}</div>
-    
     <div class="row">
       
-      <div class="logo-panel col-md-2">
+      <div class="logo-panel col-md-2 col-md-offset-1">
 	<h1>Quince</h1>
 
 	<div v-if="!token" class="login">
 	  <button  v-on:click="loginGithub">Log In With GitHub</button>
 	</div>
 
-	<div   v-if="token">
+	<div v-if="token">
 	  <div class="username">{{username}}</div>
 	  
 	  <div class="select-repo">
@@ -31,6 +29,30 @@
 	  </div>
 	</div>
 
+	<div class="status">
+	  
+	  <button class="btn btn-lg btn-warning" v-if="loading">
+	    <span class="glyphicon glyphicon-refresh spinning"></span> Loading...    
+	  </button>
+
+	  <ul class="messages">
+	    <li class="alert alert-success message" v-for="(index, msg) in messages" track-by="$index">
+	      {{index}} - {{msg}}
+	      <a class="close" v-on:click="clearMsg(index)">
+		<i class="fa fa-window-close-o"></i>
+	      </a>
+	    </li>
+
+	    <li  class="alert alert-danger error" v-for="(index, error) in errors">
+	      Error: {{error}}
+	      <a class="close" v-on:click="clearError(index)">
+		<i class="fa fa-window-close-o"></i>
+	      </a>
+	    </li>
+	  </ul>
+
+	</div><!-- .status -->
+	
       </div>
 
 
@@ -39,7 +61,11 @@
 	<div v-if="repo && username">
           <github-file-explorer
 	     :username="username" :repo="repo" :file-url="fileUrl" :token="token"
-	     v-on:edit="editFile"></github-file-explorer>
+	     v-on:edit="editFile"
+	     v-on:msg="displayMsg"
+	     v-on:error="displayError"
+	     v-on:loading="startLoading"
+	     v-on:loaded="doneLoading"></github-file-explorer>
 	</div>
       </div>
       
@@ -48,7 +74,9 @@
 			    v-on:close="fileUrl = null"
 			    v-on:remove="removeFile"
 			    v-on:add="addFile"
-			    v-on:change="changeEditingFile"></github-file-editor>
+			    v-on:change="changeEditingFile"
+			    v-on:msg="displayMsg"
+			    v-on:error="displayError"></github-file-editor>
       </div>
     </div><!-- row -->
   </div><!-- container -->

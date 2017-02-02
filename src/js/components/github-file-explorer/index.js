@@ -71,7 +71,10 @@ module.exports = {
 		.then(
                     function(response) {
 			vm.files = response.data;
-                    });
+                    },
+		    function(response){
+			vm.$emit('error', response.data.message, response.data);
+		    });
         },
         changePath: function(path) {
             this.path = path;
@@ -141,9 +144,7 @@ module.exports = {
 
 		    },
 		    function(response){
-			vm.errorMsg = response.data.message;
-			console.log("error");
-			console.log(response);
+			vm.$emit('error', response.data.message, response.data);
 		    });
 
 

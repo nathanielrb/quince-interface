@@ -5,8 +5,6 @@ module.exports = {
             content: null,
             editor: null,
             editorElt: null,
-	    msg: null,
-	    errorMsg: null,
 	    file: null,
 	    filename: null,
         };
@@ -34,8 +32,6 @@ module.exports = {
             vm = this;
 	    this.file = null;
 	    this.content = null;
-	    this.msg = null;
-	    this.errorMsg = null;
 
             console.log("getting file from github");
             this.$http.get(this.fileUrl,
@@ -52,15 +48,7 @@ module.exports = {
 	    this.$emit('close');
 	    this.fileUrl = null;
             this.file = null;
-	    this.msg = null;
-	    this.errorMsg = null;
         },
-	clearMsg: function(){
-	    this.msg = null;
-	},
-	clearErrorMsg: function(){
-	    this.errorMsg = null;
-	},
 	deleteFile: function(callback){
 	    var uri =  'https://api.github.com/repos/'
 		+ this.username + '/'
@@ -76,23 +64,20 @@ module.exports = {
 	    var vm = this;
 	    vm.$http.delete(uri,params)
 		.then(function(response){
-		    vm.msg = response.data.message;
-		    console.log(response);
-
-		    vm.$emit('remove',vm.file)
+		    vm.$emit('msg', response.data.message);
+		    vm.$emit('remove', vm.file)
 			
 		    if(callback)
 			callback();
 		},
 		      function(response){
-			  vm.errorMsg = response.data.message;
-			  console.log(response);
+			  vm.$emit('error', response.data.message, response.data);
+			  
 		      });
 	},
         save: function(){
 	    var callback = null;
             this.content = this.editor.getContent();
-	    console.log(this.content);
 
 	    var newpath = this.filename != this.file.name
 		? this.file.path.substr(0,this.file.path.lastIndexOf('/'))
@@ -118,13 +103,14 @@ module.exports = {
 		? this.deleteFile
 		: null;
 
+	    this.$emit('loading');
 	    var vm = this;
 	    this.$http.put(uri,params)
 		.then(
 		    function(response){
-			vm.msg = "Saved. Updated sha: " + response.data.content.sha;
+			vm.$emit('loaded');
+			vm.$emit('msg', "Saved.");
 			vm.file.sha = response.data.content.sha;
-			console.log(response);
 
 			if(newpath)
 			    vm.deleteFile(
@@ -135,8 +121,8 @@ module.exports = {
 				});
 		    },
 		    function(response){
-			vm.errorMsg = response.data.message;
-			console.log(response);
+			vm.$emit('loaded');
+			vm.$emit('error', response.data.message, response.data);
 		    });
 	},
 	initEditor: function(){
