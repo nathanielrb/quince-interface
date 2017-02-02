@@ -31,19 +31,19 @@
 
 	<div class="status">
 	  
-	  <button class="btn btn-lg btn-warning" v-if="loading">
-	    <span class="glyphicon glyphicon-refresh spinning"></span> Loading...    
-	  </button>
+	  <div class="loading">
+	    <span class="glyphicon glyphicon-refresh spinning" v-if="loading"></span>
+	  </div>
 
 	  <ul class="messages">
-	    <li class="alert alert-success message" v-for="(index, msg) in messages" track-by="$index">
-	      {{index}} - {{msg}}
+	    <li class="message" v-for="(index, msg) in messages" track-by="$index">
+	      {{msg}}
 	      <a class="close" v-on:click="clearMsg(index)">
 		<i class="fa fa-window-close-o"></i>
 	      </a>
 	    </li>
 
-	    <li  class="alert alert-danger error" v-for="(index, error) in errors">
+	    <li  class="error" v-for="(index, error) in errors">
 	      Error: {{error}}
 	      <a class="close" v-on:click="clearError(index)">
 		<i class="fa fa-window-close-o"></i>
@@ -76,7 +76,9 @@
 			    v-on:add="addFile"
 			    v-on:change="changeEditingFile"
 			    v-on:msg="displayMsg"
-			    v-on:error="displayError"></github-file-editor>
+			    v-on:error="displayError"
+			    v-on:loading="startLoading"
+			    v-on:loaded="doneLoading"></github-file-editor>
       </div>
     </div><!-- row -->
   </div><!-- container -->

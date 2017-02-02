@@ -166,12 +166,24 @@ ul.files li.directory {
 
 /* Messages */
 
+.loading {
+    height: 1.5em;
+}
 ul.messages {
     margin: 0;
     padding: 0;
 }
-ul.messages li.alert-success, ul.messages li.alert-danger {
+ul.messages li {
     list-style: none;
     padding: 8px;
     font-size: small;
+}
+ul.messages li.message {
+    color: red;
+    border-top: 1px dotted gray;
+}
+
+ul.messages li.error {
+    border-top: 1px dotted gray;
+    color: gray;
 }
