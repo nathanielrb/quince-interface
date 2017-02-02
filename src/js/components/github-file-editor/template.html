@@ -27,7 +27,7 @@
   </div>
 
   <div id="md-editor-toolbar" class="editor-toolbar" >
-    <button class="toolbar-button" v-for="btn in buttons" v-on:click="btn.click()">
+    <button class="toolbar-button" v-for="btn in buttons" v-on:click="btn.click()" v-bind:title="btn.label">
       <i class="fa" v-bind:class="btn.icon"></i>
     </button>
   </div>

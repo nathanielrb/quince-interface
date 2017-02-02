@@ -1283,9 +1283,9 @@
 				if (/=+/.test(chunk.endTag)) {
 					headerLevel = 1;
 				}
-				if (/-+/.test(chunk.endTag)) {
+			    if (/-+/.test(chunk.endTag)) {
 					headerLevel = 2;
-				}
+			    }
 
 				// Skip to the next line so we can create the header markdown.
 				chunk.startTag = chunk.endTag = "";
@@ -1294,7 +1294,8 @@
 				// We make a level 2 header if there is no current header.
 				// If there is a header level, we substract one from the header level.
 				// If it's already a level 1 header, it's removed.
-				var headerLevelToCreate = headerLevel === 0 ? 2 : headerLevel - 1;
+			    var headerLevelToCreate = headerLevel === 4 ? 0 :
+				(headerLevel === 0 ? 1 : headerLevel + 1); // nrb
 
 				if (headerLevelToCreate > 0) {
 
