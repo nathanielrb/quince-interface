@@ -2,8 +2,8 @@ module.exports = {
     template: require('./template.html'),
     data: function() {
         return {
-            path: '/',
-            files: [],
+            path: '',
+            files: null,
 	    newCoverImage: null,
 	    newCoverImageForm: null,
 	    addFileForm: null,

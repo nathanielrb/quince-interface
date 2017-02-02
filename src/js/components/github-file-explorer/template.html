@@ -1,6 +1,6 @@
 <div class="">
 
-    <ul class="breadcrumbs">
+    <ul class="breadcrumbs" v-if="files">
       <li class="crumb" v-for="(index, crumb) in breadcrumbs">
 	<template v-if="index < breadcrumbs.length - 1">
 	  <a v-on:click="changePath(crumb.path)">{{crumb.crumb}}</a> /
@@ -15,7 +15,7 @@
       </a>
     </div>
 
-      <ul class="files">
+      <ul class="files" v-if="files">
 	<template v-for="file in sortedFiles">
 	  <li class="metadata"  v-if="file.name === '_book.yml'">
 	      <a class="file" v-on:click="$emit('edit', file.url)">
