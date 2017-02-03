@@ -19,10 +19,11 @@ label {
     display: block;
 }
 
-#cover-image img {
-   padding: 1em 0;
+#cover-image {
+    float: right;
 }
 #cover-image img {
+    padding: 1em 0;
     width: 120px;
 }
 
