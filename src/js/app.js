@@ -2,6 +2,18 @@ var Vue = require('vue');
 Vue.config.debug = true;
 Vue.use(require('vue-resource'));
 
+var Compose = function () {
+    var fns = arguments;
+    
+    return function (result) {
+	for (var i = fns.length - 1; i > -1; i--) {
+	    result = fns[i].call(this, result);
+	}
+	
+	return result;
+    };
+}
+
 var vm = new Vue({
     el: '#container',
     data: {
@@ -25,43 +37,39 @@ var vm = new Vue({
     },
     created: function(){
 	var hash = window.location.hash;
-
+	this.initRepo();
+	
+	var storedToken = sessionStorage.getItem('token');
 	var code = this.getParameter('code');
 	
-	if(code){
-	    history.replaceState({},window.document.title, '/' + hash);
-	    this.getGithubToken(code);
-	}	
-
-	if(hash != '' && hash != '#'){
-	    var path = hash.substr(1).split('/');
-	    this.repo = path[0];
-	}
-
-	var token = sessionStorage.getItem('token');
-
-	if(token){
-	    this.token = token;
+	if(storedToken){
+	    this.token = storedToken;
 	    this.getUserName(this.getUserRepos);
 	}
-	
+	else if(code){
+	    history.replaceState({},window.document.title, '/' + hash);
+	    var vm = this;
+	    this.getGithubToken(code, function(){ vm.getUserName(vm.getUserRepos) });
+	}
     },
     methods: {
-	getGithubToken: function(code){
+	getGithubToken: function(code, callback){
 	    var url = this.githubParams.gateway + code;
 	    var vm = this;
-	    this.$http.get(url,
-			   function(data){
-			       if(data.token){
-				   vm.token = data.token;
-				   sessionStorage.setItem('token', vm.token);
-				   
-			       }
-			       else{
-				   vm.token = null;
-				   vm.displayError(data.error, data);
-			       }
-			   });
+	    this.$http.get(url).then(
+		function(response){
+		    var data = response.data;
+		    if(data.token){
+			vm.token = data.token;
+			sessionStorage.setItem('token', vm.token);
+			callback();
+		    }
+		    else{
+			vm.token = null;
+			sessionStorage.removeItem('token');
+			vm.displayError(data.error, data);
+		    }
+		});
 	},
 	getUserName: function(callback){
 	    var vm = this;
@@ -74,6 +82,7 @@ var vm = new Vue({
 		    },
 		    function(data){
 			vm.token = null;
+			sessionStorage.removeItem('token');
 			vm.displayError(data.responseText, data);
 		    });
 	},
@@ -89,6 +98,13 @@ var vm = new Vue({
 		    function(data){
 			vm.displayError(data.responseText, data);
 		    });
+	},
+	initRepo: function(){
+	    var hash = window.location.hash;
+	    if(hash != '' && hash != '#'){
+		var path = hash.substr(1).split('/');
+		this.repo = path[0];
+	    }
 	},
         editFile: function(fileUrl){
             this.fileUrl = fileUrl;

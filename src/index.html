@@ -12,7 +12,7 @@
 
     <div class="row">
       
-      <div class="logo-panel col-md-2 col-md-offset-1">
+      <div class="logo-panel col-md-3 col-md-offset-1">
 	<h1>Quince</h1>
 
 	<div v-if="!token" class="login">
@@ -29,6 +29,17 @@
 	  </div>
 	</div>
 
+
+	<div v-if="repo && username">
+          <github-file-explorer
+	     :username="username" :repo="repo" :file-url="fileUrl" :token="token"
+	     v-on:edit="editFile"
+	     v-on:msg="displayMsg"
+	     v-on:error="displayError"
+	     v-on:loading="startLoading"
+	     v-on:loaded="doneLoading"></github-file-explorer>
+	</div>
+	
 	<div class="status">
 	  
 	  <div class="loading">
@@ -56,20 +67,7 @@
       </div>
 
 
-      <div class="side-panel col-md-3">
-
-	<div v-if="repo && username">
-          <github-file-explorer
-	     :username="username" :repo="repo" :file-url="fileUrl" :token="token"
-	     v-on:edit="editFile"
-	     v-on:msg="displayMsg"
-	     v-on:error="displayError"
-	     v-on:loading="startLoading"
-	     v-on:loaded="doneLoading"></github-file-explorer>
-	</div>
-      </div>
-      
-      <div class="edit-panel col-md-6" >
+      <div class="edit-panel col-md-7" >
         <github-file-editor :file-url="fileUrl" :username="username" :repo="repo" :token="token"
 			    v-on:close="fileUrl = null"
 			    v-on:remove="removeFile"
