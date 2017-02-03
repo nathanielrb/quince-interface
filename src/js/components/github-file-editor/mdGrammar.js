@@ -81,6 +81,13 @@
         inside: insideFences
       }
     }
+    grammar.div = {
+      pattern: /^~ (?:\w+)(?:\n[ \t]*\S.*)*\n~$/gm,
+      inside: {
+          'cl cl-gt': /^~/gm,
+	  'li': grammar.li
+      }
+    }
     grammar.blockquote = {
       pattern: /^ {0,3}>.+(?:\n[ \t]*\S.*)*/gm,
       inside: {
@@ -384,6 +391,7 @@
     }
     grammar.p.inside.rest = rest
     grammar.blockquote.inside.rest = rest
+    grammar.div.inside.rest = rest
     grammar.li.inside.rest = rest
     if (options.footnotes) {
       grammar.fndef.inside.rest = rest
