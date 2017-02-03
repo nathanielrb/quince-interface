@@ -52,7 +52,6 @@ module.exports = {
         },
 	deleteFile: function(callback){
 	    var uri =  'https://api.github.com/repos/'
-		+ this.username + '/'
 		+ this.repo + '/contents/'
 		+ this.file.path + '?access_token=' + this.token;
 	    
@@ -86,7 +85,6 @@ module.exports = {
 		: null;
 
 	    var uri =  'https://api.github.com/repos/'
-		+ this.username + '/'
 		+ this.repo + '/contents/'
 		+ (newpath ? newpath : this.file.path) + '?access_token=' + this.token;
 

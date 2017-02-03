@@ -125,7 +125,6 @@ module.exports = {
 	    var newpath = this.path + '/' + name;
 
 	    var uri =  'https://api.github.com/repos/'
-		+ this.username + '/'
 		+ this.repo + '/contents'
 		+ newpath + '?access_token=' + this.token;
 
