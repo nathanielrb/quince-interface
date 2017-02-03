@@ -12,7 +12,7 @@
 
     <div class="row">
       
-      <div class="logo-panel col-md-3 col-md-offset-1">
+      <div class="side-panel col-md-4">
 	<h1>Quince</h1>
 
 	<div v-if="!token" class="login">
@@ -67,7 +67,7 @@
       </div>
 
 
-      <div class="edit-panel col-md-7" >
+      <div class="edit-panel col-md-8">
         <github-file-editor :file-url="fileUrl" :username="username" :repo="repo" :token="token"
 			    v-on:close="fileUrl = null"
 			    v-on:remove="removeFile"

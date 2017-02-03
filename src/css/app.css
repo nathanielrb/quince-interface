@@ -2,7 +2,7 @@ html,body {
     height: 100%;
 }
 body {
-    background-color: #ccc;
+
 }
 
 #changeRepoForm {
@@ -70,23 +70,22 @@ ul.breadcrumbs li {
 }
 ul.files li {
     list-style: none;
-    padding: 0.6em 1em;
+    padding: 1em 1em;
+    border-bottom: 1px solid #dcdcdc;
 }
 ul.files li.file {
-    background: #ddd;
-    border-top: 1px solid #ddd;
+
 }
 ul.files li.file.editing {
     background: pink;
 }
 
 ul.files li.metadata {
-    background: beige;
-    border-top: 1px solid #ddd;
+
 }
 ul.files li.directory {
-    background: #ddd;
-    border-top: 1px solid #eee;
+    /*background: #ddd;*/
+
 }
 
 
@@ -94,18 +93,15 @@ ul.files li.directory {
 
 #container, .row, #editor {
 }
-.logo-panel {
-
-}
 .side-panel {
-
+    padding: 0 4.2%;
+    background: #ccc;
 }
 .edit-panel {
-    padding: 0;
-    margin: 2em 0;
+    padding-left: 0px;
 }
 #editor {
-    background-color: white;
+    border-bottom: 1px dotted #ddd;
 }
 #editor .banner {
     margin: 0;
@@ -134,6 +130,7 @@ ul.files li.directory {
 }
 .editor-toolbar {
     background: #cc9;
+    padding: .5em;
 }
 .editor-toolbar button {
     background: white;
