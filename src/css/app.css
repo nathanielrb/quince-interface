@@ -70,16 +70,28 @@ ul.breadcrumbs li {
 }
 ul.files li {
     list-style: none;
-    padding: 1em 1em;
-    border-bottom: 1px solid #dcdcdc;
+    padding: 1em 1em 0 1em;
+/*    border-bottom: 1px solid #dcdcdc;*/
+    font-weight: bold;
+}
+ul.files li:after {
+    content: "";
+    display: block;
+    color: #dcdcdc;
+    background: #dcdcdc;
+    width: 10%;
+    height: 1px;
+    margin: 1em 0 0 0;
 }
 ul.files li.file {
 
 }
 ul.files li.file.editing {
-    background: pink;
+    
 }
-
+ul.files li.file.editing a {
+    color: black;
+}
 ul.files li.metadata {
 
 }
