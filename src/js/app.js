@@ -123,7 +123,7 @@ var vm = new Vue({
 		+ 'client_id=' + this.githubParams.id
 		+ '&redirect_uri=' + this.githubParams.redirect_uri + encodeURIComponent(window.location.hash)
 		+ '&state=' + this.githubParams.state
-		+'&scope=repo';
+		+'&scope=repo,write:org';
 
 	    window.location.href = github_uri;
 	},
