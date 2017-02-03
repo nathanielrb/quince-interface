@@ -92,7 +92,7 @@ var vm = new Vue({
 			   + 'access_token=' + this.token)
 		.then(
 		    function(data){
-			var names = data.data.map(function(repo){ return repo.name});
+			var names = data.data.map(function(repo){ return repo.full_name});
 			vm.repos = names;
 		    },
 		    function(data){
@@ -103,7 +103,7 @@ var vm = new Vue({
 	    var hash = window.location.hash;
 	    if(hash != '' && hash != '#'){
 		var path = hash.substr(1).split('/');
-		this.repo = path[0];
+		this.repo = path[0] + '/' + path[1];
 	    }
 	},
         editFile: function(fileUrl){

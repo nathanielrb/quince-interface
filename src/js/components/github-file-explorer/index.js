@@ -23,9 +23,6 @@ module.exports = {
 	token: null
     },
     computed: {
-        fullRepoUrl: function() {
-            return this.username + '/' + this.repo;
-        },
         sortedFiles: function() {
 	    if(this.files)
 		return this.files.slice(0).sort(function(a, b) {
@@ -68,7 +65,9 @@ module.exports = {
         getFiles: function() {
 
 	    var vm = this;
-            this.$http.get('https://api.github.com/repos/' + this.fullRepoUrl + '/contents' + this.path)
+
+
+            this.$http.get('https://api.github.com/repos/' + this.repo + '/contents/' + this.path)
 		.then(
                     function(response) {
 			vm.files = response.data;
@@ -165,7 +164,6 @@ module.exports = {
         }
     },
     created: function() {
-
 	var vm = this;
 	this.$parent.$on('add-file',
 			 function(file){
@@ -186,8 +184,8 @@ module.exports = {
 
 	var hash = window.location.hash;
 	if(hash != ''){
-	    var path = hash.substr(1).split('/');
-	    this.path = '/' + path.slice(1).join('/');
+	    var path = hash.substr(1).split('/').slice(2);
+	    this.path = '/' + path.join('/');
 	}
 
         if (this.username && this.repo)
