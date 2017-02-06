@@ -7,7 +7,8 @@ module.exports = {
 	    newCoverImage: null,
 	    newCoverImageForm: null,
 	    addFileForm: null,
-	    newFileName: null
+	    newFileName: null,
+	    filer: require('./filer.js')
         };
     },
     props: {
@@ -19,28 +20,23 @@ module.exports = {
             type: String,
             required: true
         },
-	fileUrl: null,
-	token: null
+        fileUrl: {
+            type: String
+        },
+	token: {
+            type: String,
+            required: true
+        },
+
     },
     computed: {
         sortedFiles: function() {
 	    if(this.files)
-		return this.files.slice(0).sort(function(a, b) {
-                    if (a.type !== b.type) {
-			if (a.type === 'dir') {
-                            return -1;
-			} else {
-                            return 1;
-			}
-                    } else {
-			if (a.name < b.name) {
-                            return -1;
-			} else {
-                            return 1;
-			}
-                    }
-		})
-		.filter(this.isViewable);
+		return this.files.slice(0)
+		.sort(this.fileSort)  // abstract out sort
+		// .filter(this.isViewable)
+		.map(this.filer.file.bind(this, this))
+		.filter( function(v){ return v; });
         },
 	breadcrumbs: function(){
 	    return this.path.split('/')
@@ -62,10 +58,23 @@ module.exports = {
 	}
     },
     methods: {
+	fileSort: function(a, b) {
+            if (a.type !== b.type) {
+		if (a.type === 'dir') {
+                    return -1;
+		} else {
+                    return 1;
+		}
+            } else {
+		if (a.name < b.name) {
+                    return -1;
+		} else {
+                    return 1;
+		}
+            }
+	},
         getFiles: function() {
-
 	    var vm = this;
-
 
             this.$http.get('https://api.github.com/repos/' + this.repo + '/contents/' + this.path)
 		.then(
@@ -102,7 +111,7 @@ module.exports = {
 	    	&& file.name[0] != '_';
 	},
         isContent: function(file){
-	    return ["md","html"].indexOf(this.ext(file)) > -1
+	    return ["md","html", "jpg"].indexOf(this.ext(file)) > -1
 		&& file.name[0] != '_';
         },
 	isMeta: function(file){
@@ -135,24 +144,17 @@ module.exports = {
 	    }
 
 	    var vm = this;
+	    
 	    this.$http.put(uri,params)
 		.then(
 		    function(response){
 			var newfile = response.data.content;
-
 			vm.files.push(newfile);
-
 			vm.$emit('edit', newfile.url);
-
 		    },
 		    function(response){
 			vm.$emit('error', response.data.message, response.data);
 		    });
-
-
-	},
-	changeCoverImage: function(){
-	    this.newCoverImageForm = true;
 	}
     },
     watch: {

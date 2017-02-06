@@ -9,20 +9,36 @@
       </li>
     </ul>
 
-    <div v-if="coverImage" id="cover-image">
-      <a v-on:click="changeCoverImage()">
-	<img v-bind:src="coverImage.download_url" alt="cover"/>
-      </a>
-    </div>
+    <ul class="files" v-if="files">
+      <li v-for="file in sortedFiles" v-bind:class="file.class">
+	<a v-on:click="file.click()">
+	  <i class="fa" v-if="file.icon" v-bind:class="file.icon"></i>
+	  <span v-if="file.html" v-html="file.html(file)"></span>
+	  <template v-if="!file.html">{{file.name()}}</template>
+	</a>
+	
+      </li>
+    </ul>
+    
+    <hr>
 
-      <ul class="files" v-if="files">
-	<template v-for="file in sortedFiles">
-	  <li class="metadata"  v-if="file.name === '_book.yml'">
-	      <a class="file" v-on:click="$emit('edit', file.url)">
-		<i class="fa fa-th-list"></i>
-		Metadata
-            </a>
-	  </li>
+    <ul class="files" v-if="files && null">
+      <template v-for="file in sortedFiles">
+
+
+	
+	<li v-if="file.name === 'cover.jpg'" id="cover-image">
+	  <a>
+	    <img v-bind:src="coverImage.download_url" alt="cover"/>
+	  </a>
+	</li>
+
+	<li class="filer(file).class"  v-if="file.name === '_book.yml'">
+	  <a class="file" v-on:click="$emit('edit', file.url)">
+	    <i class="fa fa-th-list"></i>
+	    Metadata
+          </a>
+	</li>
 	  
 	  <li class="file" v-bind:class="{ editing: isEditing(file) }" v-if="isContent(file)">
 	    <a class="file"  v-on:click="$emit('edit', file.url)">

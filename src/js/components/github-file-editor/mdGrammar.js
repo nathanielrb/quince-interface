@@ -84,7 +84,7 @@
     grammar.div = {
       pattern: /^~ (?:\w+)(?:\n[ \t]*\S.*)*\n~$/gm,
       inside: {
-          'cl cl-gt': /^~/gm,
+          'cl cl-gt': /^~(?: \w+)$/gm,
 	  'li': grammar.li
       }
     }

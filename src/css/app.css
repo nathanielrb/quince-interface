@@ -19,13 +19,6 @@ label {
     display: block;
 }
 
-#cover-image {
-    float: right;
-}
-#cover-image img {
-    padding: 1em 0;
-    width: 120px;
-}
 
 /* Headers */
 
@@ -101,14 +94,26 @@ ul.files li.directory {
 
 }
 
+ul.files li.cover {
+    float: right;
+    border: none;
+}
+ul.files li.cover img {
+    padding: 1em 0;
+    width: 120px;
+}
+
+
 
 /* Panels */
 
-#container, .row, #editor {
+#container, .row {
+    height: 100%;
 }
 .side-panel {
     padding: 0 4.2%;
     background: #ccc;
+    height: 100%;
 }
 .edit-panel {
     padding-left: 0px;

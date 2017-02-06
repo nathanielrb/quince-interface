@@ -2,17 +2,7 @@ var Vue = require('vue');
 Vue.config.debug = true;
 Vue.use(require('vue-resource'));
 
-var Compose = function () {
-    var fns = arguments;
-    
-    return function (result) {
-	for (var i = fns.length - 1; i > -1; i--) {
-	    result = fns[i].call(this, result);
-	}
-	
-	return result;
-    };
-}
+require('./utilities.js');
 
 var vm = new Vue({
     el: '#container',
@@ -36,33 +26,45 @@ var vm = new Vue({
 	loading: null
     },
     created: function(){
-	var hash = window.location.hash;
-	this.initRepo();
-	
 	var storedToken = sessionStorage.getItem('token');
-	var code = this.getParameter('code');
-	
+	var code = getParameter('code');
+
 	if(storedToken){
 	    this.token = storedToken;
-	    this.getUserName(this.getUserRepos);
+	    this.getUserName(this.getUserRepos(this.initRepo));
 	}
 	else if(code){
+	    var hash = window.location.hash;
 	    history.replaceState({},window.document.title, '/' + hash);
 	    var vm = this;
 	    this.getGithubToken(code, function(){ vm.getUserName(vm.getUserRepos) });
 	}
     },
     methods: {
+	loginGithub: function(){
+	    var hash = window.location.hash;
+	    
+	    var github_uri = "https://github.com/login/oauth/authorize?"
+		+ 'client_id=' + this.githubParams.id
+		+ '&redirect_uri=' + this.githubParams.redirect_uri + encodeURIComponent(hash)
+		+ '&state=' + this.githubParams.state
+		+'&scope=repo';
+
+	    window.location.href = github_uri;
+	},
 	getGithubToken: function(code, callback){
 	    var url = this.githubParams.gateway + code;
 	    var vm = this;
+	    
 	    this.$http.get(url).then(
 		function(response){
 		    var data = response.data;
 		    if(data.token){
 			vm.token = data.token;
 			sessionStorage.setItem('token', vm.token);
-			callback();
+
+			if(callback)
+			    callback.apply(vm);
 		    }
 		    else{
 			vm.token = null;
@@ -73,12 +75,15 @@ var vm = new Vue({
 	},
 	getUserName: function(callback){
 	    var vm = this;
+	    
 	    this.$http.get('https://api.github.com/user?'
 			   + 'access_token=' + this.token)
 		.then(
 		    function(data){
 			vm.username = data.data.login;
-			callback();
+
+			if(callback)
+			    callback.apply(vm);
 		    },
 		    function(data){
 			vm.token = null;
@@ -86,20 +91,25 @@ var vm = new Vue({
 			vm.displayError(data.responseText, data);
 		    });
 	},
-	getUserRepos: function(){
+	getUserRepos: function(callback){
 	    var vm = this;
+	    
 	    this.$http.get('https://api.github.com/user/repos?'
 			   + 'access_token=' + this.token)
 		.then(
 		    function(data){
-			var names = data.data.map(function(repo){ return repo.full_name});
+			var names = data.data.map(
+			    function(repo){ return repo.full_name });
 			vm.repos = names;
+
+			if(callback)
+			    callback.apply(vm);
 		    },
 		    function(data){
 			vm.displayError(data.responseText, data);
 		    });
 	},
-	initRepo: function(){
+	initRepo: function(hash){
 	    var hash = window.location.hash;
 	    if(hash != '' && hash != '#'){
 		var path = hash.substr(1).split('/');
@@ -118,34 +128,14 @@ var vm = new Vue({
 	changeEditingFile: function(fileUrl){
 	    this.fileUrl = fileUrl;
 	},
-	loginGithub: function(){
-	    var github_uri = "https://github.com/login/oauth/authorize?"
-		+ 'client_id=' + this.githubParams.id
-		+ '&redirect_uri=' + this.githubParams.redirect_uri + encodeURIComponent(window.location.hash)
-		+ '&state=' + this.githubParams.state
-		+'&scope=repo,write:org';
-
-	    window.location.href = github_uri;
-	},
-	getParameter: function(parameterName) {
-	    var result = null,
-		tmp = [];
-	    location.search
-		.substr(1)
-		.split("&")
-		.forEach(function (item) {
-		    tmp = item.split("=");
-		    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
-		});
-	    return result;
-	},
 	displayMsg: function(msg){
 	    this.messages.push( msg );
-	    console.log("MSG: "+msg);
+	    console.log(msg);
 	},
 	displayError: function(msg, obj){
 	    this.errors.push( msg );
-	    console.log("Error: " + msg);
+	    console.log("Error");
+	    console.log(msg);
 	    console.log(obj);
 	},
 	clearMsg: function(n){
@@ -154,12 +144,13 @@ var vm = new Vue({
 	clearError: function(n){
 	    this.errors.splice(n,1);
 	},
+	clearErrors: function(){
+	    this.errors = [];
+	},
 	startLoading: function(){
-	    console.log("Loading");
 	    this.loading = true;
 	},
 	doneLoading: function(){
-	    console.log("Done Loading");
 	    this.loading = null;
 	}
     },
