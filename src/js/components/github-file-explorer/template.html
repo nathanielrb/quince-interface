@@ -19,52 +19,17 @@
 	
       </li>
     </ul>
-    
-    <hr>
 
-    <ul class="files" v-if="files && null">
-      <template v-for="file in sortedFiles">
+    <div>
+      <a v-on:click="showAddFileForm">
+	<i class="fa fa-plus"></i> file
+      </a>
+      <form v-if="addFileForm" v-on:submit.prevent="addFile">
+	<input autofocus v-model="newFileName" type="text" v-on:blur="hideAddFileForm" />
+	<button>Add</button>
+      </form>
+    </div>
 
-
-	
-	<li v-if="file.name === 'cover.jpg'" id="cover-image">
-	  <a>
-	    <img v-bind:src="coverImage.download_url" alt="cover"/>
-	  </a>
-	</li>
-
-	<li class="filer(file).class"  v-if="file.name === '_book.yml'">
-	  <a class="file" v-on:click="$emit('edit', file.url)">
-	    <i class="fa fa-th-list"></i>
-	    Metadata
-          </a>
-	</li>
-	  
-	  <li class="file" v-bind:class="{ editing: isEditing(file) }" v-if="isContent(file)">
-	    <a class="file"  v-on:click="$emit('edit', file.url)">
-              <i class="fa fa-file-o"></i>
-              {{ file.name }}
-            </a>
-	  </li>
-	  
-	  <li class="directory" v-if="isDir(file)">
-            <span class="directory" >
-              <i class="fa fa-folder-o"></i>
-              <a v-on:click="changePath(file.path)">{{ file.name }}</a>
-            </span>
-	  </li>
-	</template>
-	
-	<li>
-	  <a v-on:click="showAddFileForm">
-	    <i class="fa fa-plus"></i> file
-	  </a>
-	  <form v-if="addFileForm" v-on:submit.prevent="addFile">
-	    <input autofocus v-model="newFileName" type="text" v-on:blur="hideAddFileForm" />
-	    <button>Add</button>
-	  </form>
-	</li>
-      </ul>
           
 
 </div>

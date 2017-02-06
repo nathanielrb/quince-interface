@@ -35,7 +35,6 @@
 	    },
 	    {
 		test: function(){
-		    console.log("testing dir: " + file);
 		    return file.type == 'dir'
 	    		&& file.name[0] != '_';
 		},
@@ -85,7 +84,6 @@
     }
 
     var file = function(vm, file){
-	console.log("filing " + file);
 	return filerRec(file, filerRules(vm, file));
     }
     
