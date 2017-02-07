@@ -1,4 +1,4 @@
-var Editors = require('./../../editors/editors.js');
+var Editors = require('./../editors/editors.js');
 
 var filerRules = function(vm, file){
     return [

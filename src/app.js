@@ -7,8 +7,8 @@ require('./utilities.js');
 var vm = new Vue({
     el: '#container',
     data: {
-        fullRepoName: '',
-        username: '',
+        fullRepoName: null,
+        username: null,
 	repos: null,
         repo: null,
         fileUrl: null,
@@ -116,6 +116,19 @@ var vm = new Vue({
 		var path = hash.substr(1).split('/');
 		this.repo = path[0] + '/' + path[1];
 	    }
+	},
+	logout: function(){
+	    this.username = null;
+	    this.repo = null;
+	    this.path = null;
+	    this.token = null;
+	    this.repos = null;
+            this.fileUrl = null;
+	    this.editor = null;
+	    this.github = null;
+	    this.loggedIn = false;
+	    window.location.hash = '';
+	    localStorage.removeItem('token');
 	},
         editFile: function(args){
             this.fileUrl = args.url;

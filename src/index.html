@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Vue.js Github Explorer Blog</title>
+    <title>Quince</title>
 
     <link rel="stylesheet" href="css/app.min.css">
 </head>
@@ -28,7 +28,9 @@
 	</div>
 
 	<div v-if="token">
-	  <div class="username">{{username}}</div>
+	  <div class="username">{{username}}
+	    <small><a v-on:click="logout">logout</a></small>
+	  </div>
 	  
 	  <div class="select-repo">
 	    <select v-model="repo">

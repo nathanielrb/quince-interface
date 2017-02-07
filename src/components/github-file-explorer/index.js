@@ -1,4 +1,4 @@
-var F = require('./filer.js');
+var Filer = require('./../../filer/filer.js');
 
 module.exports = {
     template: require('./template.html'),
@@ -161,7 +161,7 @@ module.exports = {
         }
     },
     created: function() {
-	this.filer = new F(this);
+	this.filer = new Filer(this);
 	
 	var vm = this;
 	this.$parent.$on('add-file',
