@@ -27,6 +27,18 @@ var filerRules = function(vm, file){
 	    url: file.url
 	},
 	{
+	    test: "_book.json",
+	    icon: "fa-tachometer",
+	    class: "metadata",
+	    name: function(){
+		return "Settings";
+	    },
+	    click: function(){
+		vm.$emit('edit', {url: file.url});
+	    },
+	    url: file.url
+	},
+	{
 	    test: "cover.jpg",
 	    class: "cover",
 	    html: function(){
@@ -52,7 +64,12 @@ var filerRules = function(vm, file){
 	}
     ]
 }
-    
+
+var merge = function(rule, file){
+    rule.file = file;
+    return rule;
+}
+
 var filerRec = function(file, rules){
     if(rules.length > 0){
 	var rule = rules[0];
@@ -60,20 +77,20 @@ var filerRec = function(file, rules){
 	switch (typeof rule.test){
 	case "string":
 	    if(file.name === rule.test)
-		return rule;
+		return merge(rule, file);
 	    else
 		return filerRec(file, rules.slice(1));
 	    break;
 	case "function":
 	    if(rule.test(file.name))
-		return rule;
+		return merge(rule, file);
 	    else
 		return filerRec(file, rules.slice(1));
 	    break;
 	case "object":
 	    if(rule.test.constructor.name === "RegExp"){
 		if(rule.test.exec(file.name))
-		    return rule;
+		    return merge(rule, file);
 		else
 		    return filerRec(file, rules.slice(1));
 	    }
@@ -91,10 +108,35 @@ var file = function(vm){
 	return filerRec(file, filerRules(vm, file));
     }
 }
+
+var filesort = function(a, b) {
+    if(a.name[0] === '_' && b.name[0] != '_'){
+	return -1;
+    }
+    else if(a.name[0] != '_' && b.name[0] === '_'){
+	return 1;
+    }
+    else if (a.type !== b.type) {
+	if (a.type === 'dir') {
+            return -1;
+	} else {
+            return 1;
+	}
+    }
+    else {
+	if (a.name.toLowerCase() < b.name.toLowerCase()) {
+            return -1;
+	} else {
+            return 1;
+	}
+    }
+}
+
     
 module.exports = function(vm){
     return {
-	file: file(vm)
+	file: file(vm),
+	filesort: filesort
     }
 }
 

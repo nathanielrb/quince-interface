@@ -33,9 +33,11 @@ module.exports = {
     },
     computed: {
         sortedFiles: function() {
+	    console.log(this.files);
+	    
 	    if(this.files)
 		return this.files.slice(0)
-		.sort(this.fileSort)  // abstract out sort
+		.sort(this.filer.filesort)
 		.map(this.filer.file)
 		.filter( function(v){ return v; });
         },
@@ -53,21 +55,6 @@ module.exports = {
 	}
     },
     methods: {
-	fileSort: function(a, b) {
-            if (a.type !== b.type) {
-		if (a.type === 'dir') {
-                    return -1;
-		} else {
-                    return 1;
-		}
-            } else {
-		if (a.name < b.name) {
-                    return -1;
-		} else {
-                    return 1;
-		}
-            }
-	},
         getFiles: function() {
 	    var vm = this;
 
@@ -162,7 +149,7 @@ module.exports = {
     },
     created: function() {
 	this.filer = new Filer(this);
-	
+
 	var vm = this;
 	this.$parent.$on('add-file',
 			 function(file){
