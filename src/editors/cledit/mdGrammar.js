@@ -80,8 +80,15 @@
         inside: insideFences
       }
     }
-    grammar.div = {
+    grammar.squiggle = {
       pattern: /^~ (?:\w+)(?:\n[ \t]*\S.*)*\n~$/gm,
+      inside: {
+          'cl cl-gt': /^~(?: \w+)$/gm,
+	  'li': grammar.li
+      }
+    }
+    grammar.div = {
+      pattern: /^<div class=['"]\w+['"]>(?:\n[ \t]*\S.*)*?\n<\/div>$/gm,
       inside: {
           'cl cl-gt': /^~(?: \w+)$/gm,
 	  'li': grammar.li
@@ -391,6 +398,7 @@
     grammar.p.inside.rest = rest
     grammar.blockquote.inside.rest = rest
     grammar.div.inside.rest = rest
+    grammar.squiggle.inside.rest = rest
     grammar.li.inside.rest = rest
     if (options.footnotes) {
       grammar.fndef.inside.rest = rest

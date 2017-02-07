@@ -48,9 +48,9 @@ pre:focus {
 }
 
 .tag {
-    color: #555;
-    font-weight: bold;
+    color: #ddd;
     font-family: Courier, monospace;
+    font-weight: bold;
     font-size: 1em;
 }
 
@@ -63,6 +63,17 @@ div.sidebar {
 .tag .attr-value,
 .tag .attr-name {
     font-weight: normal;
+}
+/* Divs */
+.tag {
+    color: gray
+    font-family: Courier, monospace;
+    font-size: .9em;
+    color: pink;
+}
+.div .tag .attr-value{
+    font-weight: bold;
+    color: black;
 }
 
 .latex,
