@@ -205,7 +205,6 @@ ul.messages li.message {
     border-top: 1px dotted gray;
 }
 
-ul.messages li.error {
-    border-top: 1px dotted red;
+.error {
     color: red;
 }

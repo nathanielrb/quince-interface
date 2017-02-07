@@ -22,8 +22,8 @@ var vm = new Vue({
 	    gateway: 'http://localhost:9999/authenticate/'
 	},
 	token: null,
-	messages: [],
-	errors: [],
+	message: null,
+	error: null,
 	loading: null
     },
     created: function(){
@@ -118,40 +118,35 @@ var vm = new Vue({
 	    }
 	},
         editFile: function(args){
-	    console.log("Editing");
-	    console.log(args);
             this.fileUrl = args.url;
 	    this.editor = args.editor;
         },
-	removeFile: function(file){
-	    this.$emit('remove-file', file);
-	},
-	addFile: function(file){
-	    this.$emit('add-file', file);
-	},
 	changeEditingFile: function(fileUrl){
 	    this.fileUrl = fileUrl;
 	},
 	displayMsg: function(msg){
-	    this.messages.push( msg );
-	    console.log(msg);
+	    this.loading = null;
+	    this.error = null;
+	    this.message = msg;
+	    console.log("msg: " + this.message);
 	},
 	displayError: function(msg, obj){
-	    this.errors.push( msg );
+	    this.message = null;
+	    this.loading = null;
+	    this.error =  msg;
 	    console.log("Error");
 	    console.log(msg);
 	    console.log(obj);
 	},
 	clearMsg: function(n){
-	    this.messages.splice(n,1);
+	    this.message = null;
 	},
 	clearError: function(n){
-	    this.errors.splice(n,1);
-	},
-	clearErrors: function(){
-	    this.errors = [];
+	    this.error = null;
 	},
 	startLoading: function(){
+	    this.message = null;
+	    this.error = null;
 	    this.loading = true;
 	},
 	doneLoading: function(){

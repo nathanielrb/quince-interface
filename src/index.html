@@ -14,26 +14,14 @@
       
       <div class="side-panel col-md-4">
 	<h1>Quince
- 	  <span class="loading">
+	  <span class="status">
 	    <span class="glyphicon glyphicon-refresh spinning" v-if="loading"></span>
+	    <span class="fa fa-check" v-if="message"
+		  v-bind:title="message"></span>
+	    <span class="fa fa-exclamation-circle error" v-if="error"
+		  v-bind:title="error"></span>
 	  </span>
 	</h1>
-
-	<ul class="messages">
-	    <li class="message" v-for="(index, msg) in messages" track-by="$index">
-	      {{msg}}
-	      <a class="close" v-on:click="clearMsg(index)">
-		<i class="fa fa-window-close-o"></i>
-	      </a>
-	    </li>
-
-	    <li  class="error" v-for="(index, error) in errors">
-	      Error: {{error}}
-	      <a class="close" v-on:click="clearError(index)">
-		<i class="fa fa-window-close-o"></i>
-	      </a>
-	    </li>
-	</ul>
 	
 	<div v-if="!token" class="login">
 	  <button  v-on:click="loginGithub">Log In With GitHub</button>

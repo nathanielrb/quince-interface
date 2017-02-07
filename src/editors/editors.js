@@ -2,14 +2,14 @@ window.diff_match_patch = require('googlediff'); ///javascript/diff_match_patch_
 
 require('clunderscore/clunderscore');
 require('prismjs/components/prism-core');
-require('../../../node_modules/cledit/scripts/cleditCore.js');
-require('../../../node_modules/cledit/scripts/cleditHighlighter.js');
-require('../../../node_modules/cledit/scripts/cleditKeystroke.js');
-require('../../../node_modules/cledit/scripts/cleditMarker.js');
-require('../../../node_modules/cledit/scripts/cleditSelectionMgr.js');
-require('../../../node_modules/cledit/scripts/cleditUndoMgr.js');
-require('../../../node_modules/cledit/scripts/cleditUtils.js');
-require('../../../node_modules/cledit/scripts/cleditWatcher.js');
+require('../../node_modules/cledit/scripts/cleditCore.js');
+require('../../node_modules/cledit/scripts/cleditHighlighter.js');
+require('../../node_modules/cledit/scripts/cleditKeystroke.js');
+require('../../node_modules/cledit/scripts/cleditMarker.js');
+require('../../node_modules/cledit/scripts/cleditSelectionMgr.js');
+require('../../node_modules/cledit/scripts/cleditUndoMgr.js');
+require('../../node_modules/cledit/scripts/cleditUtils.js');
+require('../../node_modules/cledit/scripts/cleditWatcher.js');
 
 var Pagedown = require('./cledit/pagedown.js');
 var buttonBar = require('./cledit/buttonBar.js');

@@ -21,8 +21,8 @@ gulp.task('css', function() {
         'node_modules/bootstrap/dist/css/bootstrap.min.css',
         'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
         'node_modules/font-awesome/css/font-awesome.min.css',
-        'src/css/app.css',
-        'src/js/editors/cledit/cledit.css'
+        'src/app.css',
+        'src/editors/cledit/cledit.css'
     ];
 
     gulp.src(stylesheets)
@@ -40,12 +40,9 @@ gulp.task('fonts', function() {
         .pipe(gulp.dest('dist/fonts'));
 });
 
-
-
-
 gulp.task('js', function() {
     browserify({
-        entries: 'src/js/app.js', 
+        entries: 'src/app.js', 
         debug: true
     })
     .transform(partialify)
@@ -68,65 +65,6 @@ gulp.task('js', function() {
     
 });
 
-var includeJs = [
-    'googlediff/javascript/diff_match_patch_uncompressed',
-    'clunderscore/clunderscore',
-    'prismjs/components/prism-core',
-    'cledit/scripts/cleditCore',
-    'cledit/scripts/cleditHighlighter',
-    'cledit/scripts/cleditKeystroke',
-    'cledit/scripts/cleditMarker',
-    'cledit/scripts/cleditSelectionMgr',
-    'cledit/scripts/cleditUndoMgr',
-    'cledit/scripts/cleditUtils',
-    'cledit/scripts/cleditWatcher'    
-];
-// includeJs.map(require.resolve);
-
-if(false)
-gulp.task('editor-js', function() {
-    var scripts = includeJs
-    .map(function(script){ return 'node_modules/' + script + '.js' })
-	.concat([//'src/js/components/github-file-editor/mdGrammar.js',
-	    //'src/js/components/github-file-editor/cledit/pagedown.js',
-	//	 'src/js/components/github-file-editor/cledit/buttonBar.js',
-	    //	'/oauth2-client-js/dist/oauth2-client.js']);
-	]);
-    
-    buildJs(scripts, 'editor.js', 'dist/js');
-/*
-    gulp.src(scripts)
-    .pipe(concat('editor.js'))
-    .pipe(gulp.dest('dist/js'));*/
-});
-
-var buildJs = function(scripts, filename, dest){
-     gulp.src(scripts)
-    .pipe(concat(filename))
-    .pipe(gulp.dest(dest));
-}
-
-
-/*
-gulp.task('editor-js', function () {
-    streamqueue({ objectMode: true },
-                    gulp.src(editorJs))
-        .pipe(source('editor.min.js'))
-        .pipe(gulp.dest('dist/js'))
-});
-*/
-/*
-gulp.task('editor-js', function() {
-    return browserify({entries: editorJs.map(function(file){return file+'.js'}) })
-        .bundle()
-        //Pass desired output filename to vinyl-source-stream
-        .pipe(source('editor.min.js'))
-        // Start piping stream to tasks!
-        .pipe(gulp.dest('dist/js'));
-});
-  */   
-
-
 gulp.task('start-server', function() {
     connect.server({ root: 'dist', livereload: true });
 });
@@ -136,7 +74,7 @@ gulp.task('watch:html', function() {
 });
 
 gulp.task('watch:js', function() {
-    gulp.watch('src/js/**/*.*', ['js']);
+    gulp.watch('src/**/*.*', ['js']);
 });
 
 gulp.task('compile', ['html', 'css', 'fonts', 'js']);
