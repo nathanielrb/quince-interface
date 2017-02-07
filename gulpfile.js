@@ -22,7 +22,7 @@ gulp.task('css', function() {
         'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
         'node_modules/font-awesome/css/font-awesome.min.css',
         'src/css/app.css',
-        'src/js/components/github-file-editor/cledit.css'
+        'src/js/editors/cledit/cledit.css'
     ];
 
     gulp.src(stylesheets)
@@ -81,16 +81,17 @@ var includeJs = [
     'cledit/scripts/cleditUtils',
     'cledit/scripts/cleditWatcher'    
 ];
-includeJs.map(require.resolve);
+// includeJs.map(require.resolve);
 
+if(false)
 gulp.task('editor-js', function() {
     var scripts = includeJs
     .map(function(script){ return 'node_modules/' + script + '.js' })
-	.concat(['src/js/components/github-file-editor/mdGrammar.js',
-		 'src/js/components/github-file-editor/cledit/pagedown.js',
-		 'src/js/components/github-file-editor/cledit/buttonBar.js',
-		 'src/js/components/github-file-explorer/filer.js',
-		'/oauth2-client-js/dist/oauth2-client.js']);
+	.concat([//'src/js/components/github-file-editor/mdGrammar.js',
+	    //'src/js/components/github-file-editor/cledit/pagedown.js',
+	//	 'src/js/components/github-file-editor/cledit/buttonBar.js',
+	    //	'/oauth2-client-js/dist/oauth2-client.js']);
+	]);
     
     buildJs(scripts, 'editor.js', 'dist/js');
 /*
@@ -138,7 +139,7 @@ gulp.task('watch:js', function() {
     gulp.watch('src/js/**/*.*', ['js']);
 });
 
-gulp.task('compile', ['html', 'css', 'fonts', 'js', 'editor-js']);
+gulp.task('compile', ['html', 'css', 'fonts', 'js']);
 gulp.task('watch', ['compile', 'watch:html', 'watch:js']);
 gulp.task('serve', ['watch', 'start-server']);
 gulp.task('default', ['compile']);

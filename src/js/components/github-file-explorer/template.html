@@ -10,8 +10,8 @@
     </ul>
 
     <ul class="files" v-if="files">
-      <li v-for="file in sortedFiles" v-bind:class="file.class">
-	<a v-on:click="file.click()">
+      <li v-for="file in sortedFiles" v-bind:class="[file.class, {editing: isEditing(file)}]">
+	<a v-on:click="file.click">
 	  <i class="fa" v-if="file.icon" v-bind:class="file.icon"></i>
 	  <span v-if="file.html" v-html="file.html(file)"></span>
 	  <template v-if="!file.html">{{file.name()}}</template>

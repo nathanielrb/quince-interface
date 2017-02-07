@@ -1,173 +1,171 @@
-/*eslint-disable */
-angular.module('classeur.core.pagedown', [])
-	.factory('clPagedown',
-		function() {
 
-			var util = {},
-				re = window.RegExp,
-				SETTINGS = {
-					lineLength: 72
-				};
 
-			var defaultsStrings = {
-				bold: "Strong <strong> Ctrl/Cmd+B",
-				boldexample: "strong text",
 
-				italic: "Emphasis <em> Ctrl/Cmd+I",
-				italicexample: "emphasized text",
-
-				link: "Hyperlink <a> Ctrl/Cmd+L",
-				linkdescription: "enter link description here",
-				linkdialog: "<p><b>Insert Hyperlink</b></p><p>http://example.com/ \"optional title\"</p>",
-
-				quote: "Blockquote <blockquote> Ctrl/Cmd+Q",
-				quoteexample: "Blockquote",
-
-				code: "Code Sample <pre><code> Ctrl/Cmd+K",
-				codeexample: "enter code here",
-
-				image: "Image <img> Ctrl/Cmd+G",
-				imagedescription: "enter image description here",
-				imagedialog: "<p><b>Insert Image</b></p><p>http://example.com/images/diagram.jpg \"optional title\"<br><br>Need <a href='http://www.google.com/search?q=free+image+hosting' target='_blank'>free image hosting?</a></p>",
-
-				olist: "Numbered List <ol> Ctrl/Cmd+O",
-				ulist: "Bulleted List <ul> Ctrl/Cmd+U",
-				litem: "List item",
-
-				heading: "Heading <h1>/<h2> Ctrl/Cmd+H",
-				headingexample: "Heading",
-
-				hr: "Horizontal Rule <hr> Ctrl/Cmd+R",
-
-				undo: "Undo - Ctrl/Cmd+Z",
-				redo: "Redo - Ctrl/Cmd+Y",
-
-				help: "Markdown Editing Help"
-			};
-
-			// options, if given, can have the following properties:
-			//   options.helpButton = { handler: yourEventHandler }
-			//   options.strings = { italicexample: "slanted text" }
-			// `yourEventHandler` is the click handler for the help button.
-			// If `options.helpButton` isn't given, not help button is created.
-			// `options.strings` can have any or all of the same properties as
-			// `defaultStrings` above, so you can just override some string displayed
-			// to the user on a case-by-case basis, or translate all strings to
-			// a different language.
-			//
-			// For backwards compatibility reasons, the `options` argument can also
-			// be just the `helpButton` object, and `strings.help` can also be set via
-			// `helpButton.title`. This should be considered legacy.
-			//
-			// The constructed editor object has the methods:
-			// - getConverter() returns the markdown converter object that was passed to the constructor
-			// - run() actually starts the editor; should be called after all necessary plugins are registered. Calling this more than once is a no-op.
-			// - refreshPreview() forces the preview to be updated. This method is only available after run() was called.
-			function Pagedown(options) {
-
-				options = options || {};
-
-				if (typeof options.handler === "function") { //backwards compatible behavior
-					options = {
-						helpButton: options
-					};
-				}
-				options.strings = options.strings || {};
-				var getString = function(identifier) {
-					return options.strings[identifier] || defaultsStrings[identifier];
-				};
-
-				function identity(x) {
-					return x;
-				}
-
-				function returnFalse() {
-					return false;
-				}
-
-				function HookCollection() {}
-				HookCollection.prototype = {
-
-					chain: function(hookname, func) {
-						var original = this[hookname];
-						if (!original) {
-							throw new Error("unknown hook " + hookname);
-						}
-
-						if (original === identity) {
-							this[hookname] = func;
-						} else {
-							this[hookname] = function() {
-								var args = Array.prototype.slice.call(arguments, 0);
-								args[0] = original.apply(null, args);
-								return func.apply(null, args);
-							};
-						}
-					},
-					set: function(hookname, func) {
-						if (!this[hookname]) {
-							throw new Error("unknown hook " + hookname);
-						}
-						this[hookname] = func;
-					},
-					addNoop: function(hookname) {
-						this[hookname] = identity;
-					},
-					addFalse: function(hookname) {
-						this[hookname] = returnFalse;
-					}
-				};
-
-				var hooks = this.hooks = new HookCollection();
-				hooks.addNoop("onPreviewRefresh"); // called with no arguments after the preview has been refreshed
-				hooks.addNoop("postBlockquoteCreation"); // called with the user's selection *after* the blockquote was created; should return the actual to-be-inserted text
-				hooks.addFalse("insertImageDialog");
-				/* called with one parameter: a callback to be called with the URL of the image. If the application creates
-				 * its own image insertion dialog, this hook should return true, and the callback should be called with the chosen
-				 * image url (or null if the user cancelled). If this hook returns false, the default dialog will be used.
-				 */
-				hooks.addFalse("insertLinkDialog");
-
-				var that = this,
-					input;
-
-				this.run = function() {
-					if (input)
-						return; // already initialized
-
-					input = options.input;
-					var commandManager = new CommandManager(hooks, getString);
-					var uiManager;
-
-					uiManager = new UIManager(input, commandManager);
-
-					that.uiManager = uiManager;
-				};
-
+    var util = {},
+	re = window.RegExp,
+	SETTINGS = {
+	    lineLength: 72
+	};
+    
+    var defaultsStrings = {
+	bold: "Strong <strong> Ctrl/Cmd+B",
+	boldexample: "strong text",
+	
+	italic: "Emphasis <em> Ctrl/Cmd+I",
+	italicexample: "emphasized text",
+	
+	link: "Hyperlink <a> Ctrl/Cmd+L",
+	linkdescription: "enter link description here",
+	linkdialog: "<p><b>Insert Hyperlink</b></p><p>http://example.com/ \"optional title\"</p>",
+	
+	quote: "Blockquote <blockquote> Ctrl/Cmd+Q",
+	quoteexample: "Blockquote",
+	
+	code: "Code Sample <pre><code> Ctrl/Cmd+K",
+	codeexample: "enter code here",
+	
+	image: "Image <img> Ctrl/Cmd+G",
+	imagedescription: "enter image description here",
+	imagedialog: "<p><b>Insert Image</b></p><p>http://example.com/images/diagram.jpg \"optional title\"<br><br>Need <a href='http://www.google.com/search?q=free+image+hosting' target='_blank'>free image hosting?</a></p>",
+	
+	olist: "Numbered List <ol> Ctrl/Cmd+O",
+	ulist: "Bulleted List <ul> Ctrl/Cmd+U",
+	litem: "List item",
+	
+	heading: "Heading <h1>/<h2> Ctrl/Cmd+H",
+	headingexample: "Heading",
+	
+	hr: "Horizontal Rule <hr> Ctrl/Cmd+R",
+	
+	undo: "Undo - Ctrl/Cmd+Z",
+	redo: "Redo - Ctrl/Cmd+Y",
+	
+	help: "Markdown Editing Help"
+    };
+    
+    // options, if given, can have the following properties:
+    //   options.helpButton = { handler: yourEventHandler }
+    //   options.strings = { italicexample: "slanted text" }
+    // `yourEventHandler` is the click handler for the help button.
+    // If `options.helpButton` isn't given, not help button is created.
+    // `options.strings` can have any or all of the same properties as
+    // `defaultStrings` above, so you can just override some string displayed
+    // to the user on a case-by-case basis, or translate all strings to
+    // a different language.
+    //
+    // For backwards compatibility reasons, the `options` argument can also
+    // be just the `helpButton` object, and `strings.help` can also be set via
+    // `helpButton.title`. This should be considered legacy.
+    //
+    // The constructed editor object has the methods:
+    // - getConverter() returns the markdown converter object that was passed to the constructor
+    // - run() actually starts the editor; should be called after all necessary plugins are registered. Calling this more than once is a no-op.
+    // - refreshPreview() forces the preview to be updated. This method is only available after run() was called.
+    function Pagedown(options) {
+	
+	options = options || {};
+	
+	if (typeof options.handler === "function") { //backwards compatible behavior
+	    options = {
+		helpButton: options
+	    };
+	}
+	options.strings = options.strings || {};
+	var getString = function(identifier) {
+	    return options.strings[identifier] || defaultsStrings[identifier];
+	};
+	
+	function identity(x) {
+	    return x;
+	}
+	
+	function returnFalse() {
+	    return false;
+	}
+	
+	function HookCollection() {}
+	HookCollection.prototype = {
+	    
+	    chain: function(hookname, func) {
+		var original = this[hookname];
+		if (!original) {
+		    throw new Error("unknown hook " + hookname);
+		}
+		
+		if (original === identity) {
+		    this[hookname] = func;
+		} else {
+		    this[hookname] = function() {
+			var args = Array.prototype.slice.call(arguments, 0);
+			args[0] = original.apply(null, args);
+			return func.apply(null, args);
+		    };
+		}
+	    },
+	    set: function(hookname, func) {
+		if (!this[hookname]) {
+		    throw new Error("unknown hook " + hookname);
+		}
+		this[hookname] = func;
+	    },
+	    addNoop: function(hookname) {
+		this[hookname] = identity;
+	    },
+	    addFalse: function(hookname) {
+		this[hookname] = returnFalse;
+	    }
+	};
+	
+	var hooks = this.hooks = new HookCollection();
+	hooks.addNoop("onPreviewRefresh"); // called with no arguments after the preview has been refreshed
+	hooks.addNoop("postBlockquoteCreation"); // called with the user's selection *after* the blockquote was created; should return the actual to-be-inserted text
+	hooks.addFalse("insertImageDialog");
+	/* called with one parameter: a callback to be called with the URL of the image. If the application creates
+	 * its own image insertion dialog, this hook should return true, and the callback should be called with the chosen
+	 * image url (or null if the user cancelled). If this hook returns false, the default dialog will be used.
+	 */
+	hooks.addFalse("insertLinkDialog");
+	
+	var that = this,
+	    input;
+	
+	this.run = function() {
+	    if (input)
+		return; // already initialized
+	    
+	    input = options.input;
+	    var commandManager = new CommandManager(hooks, getString);
+	    var uiManager;
+	    
+	    uiManager = new UIManager(input, commandManager);
+	    
+	    that.uiManager = uiManager;
+	};
+	
 			}
-
-			// before: contains all the text in the input box BEFORE the selection.
-			// after: contains all the text in the input box AFTER the selection.
-			function Chunks() {}
-
-			// startRegex: a regular expression to find the start tag
-			// endRegex: a regular expresssion to find the end tag
-			Chunks.prototype.findTags = function(startRegex, endRegex) {
-
-				var chunkObj = this;
-				var regex;
-
-				if (startRegex) {
-
-					regex = util.extendRegExp(startRegex, "", "$");
-
-					this.before = this.before.replace(regex,
-						function(match) {
-							chunkObj.startTag = chunkObj.startTag + match;
-							return "";
-						});
-
-					regex = util.extendRegExp(startRegex, "^", "");
+    
+    // before: contains all the text in the input box BEFORE the selection.
+    // after: contains all the text in the input box AFTER the selection.
+    function Chunks() {}
+    
+    // startRegex: a regular expression to find the start tag
+    // endRegex: a regular expresssion to find the end tag
+    Chunks.prototype.findTags = function(startRegex, endRegex) {
+	
+	var chunkObj = this;
+	var regex;
+	
+	if (startRegex) {
+	    
+	    regex = util.extendRegExp(startRegex, "", "$");
+	    
+	    this.before = this.before.replace(regex,
+					      function(match) {
+						  chunkObj.startTag = chunkObj.startTag + match;
+						  return "";
+					      });
+	    
+	    regex = util.extendRegExp(startRegex, "^", "");
 
 					this.selection = this.selection.replace(regex,
 						function(match) {
@@ -1286,9 +1284,9 @@ angular.module('classeur.core.pagedown', [])
 				if (/=+/.test(chunk.endTag)) {
 					headerLevel = 1;
 				}
-				if (/-+/.test(chunk.endTag)) {
+			    if (/-+/.test(chunk.endTag)) {
 					headerLevel = 2;
-				}
+			    }
 
 				// Skip to the next line so we can create the header markdown.
 				chunk.startTag = chunk.endTag = "";
@@ -1297,7 +1295,8 @@ angular.module('classeur.core.pagedown', [])
 				// We make a level 2 header if there is no current header.
 				// If there is a header level, we substract one from the header level.
 				// If it's already a level 1 header, it's removed.
-				var headerLevelToCreate = headerLevel === 0 ? 2 : headerLevel - 1;
+			    var headerLevelToCreate = headerLevel === 4 ? 0 :
+				(headerLevel === 0 ? 1 : headerLevel + 1); // nrb
 
 				if (headerLevelToCreate > 0) {
 
@@ -1315,7 +1314,7 @@ angular.module('classeur.core.pagedown', [])
 				chunk.skipLines(2, 1, true);
 			};
 
-			return function(options) {
-				return new Pagedown(options);
-			};
-		});
+
+
+
+module.exports = Pagedown;

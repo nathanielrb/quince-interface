@@ -1,3 +1,5 @@
+var F = require('./filer.js');
+
 module.exports = {
     template: require('./template.html'),
     data: function() {
@@ -8,7 +10,7 @@ module.exports = {
 	    newCoverImageForm: null,
 	    addFileForm: null,
 	    newFileName: null,
-	    filer: require('./filer.js')
+	    filer: null,
         };
     },
     props: {
@@ -34,8 +36,7 @@ module.exports = {
 	    if(this.files)
 		return this.files.slice(0)
 		.sort(this.fileSort)  // abstract out sort
-		// .filter(this.isViewable)
-		.map(this.filer.file.bind(this, this))
+		.map(this.filer.file)
 		.filter( function(v){ return v; });
         },
 	breadcrumbs: function(){
@@ -44,17 +45,11 @@ module.exports = {
 		.reduce(function(prevVal, elem, index, array){
 		    return prevVal.concat([  { 
 			crumb: elem,
-			path: prevVal.length > 1 ? prevVal[prevVal.length - 1].path + '/' + elem : elem
+			path: prevVal.length > 1
+			    ? prevVal[prevVal.length - 1].path + '/' + elem
+			    : elem
 		    } ]);
 		}, [{crumb: '..', path: ''}]);
-	},
-	coverImage: function(){
-	    if(this.files){
-		var cover = this.files.filter(function(file){
-		    return file.name === "cover.jpg";
-		});
-		return cover ? cover[0] : null;
-	    }
 	}
     },
     methods: {
@@ -76,7 +71,7 @@ module.exports = {
         getFiles: function() {
 	    var vm = this;
 
-            this.$http.get('https://api.github.com/repos/' + this.repo + '/contents/' + this.path)
+            this.$http.get('https://api.github.com/repos/' + this.repo + '/contents/' + this.path + '?access_token=' + this.token)
 		.then(
                     function(response) {
 			vm.files = response.data;
@@ -150,7 +145,8 @@ module.exports = {
 		    function(response){
 			var newfile = response.data.content;
 			vm.files.push(newfile);
-			vm.$emit('edit', newfile.url);
+			vm.filer.file(newfile).click();
+			//vm.$emit('edit', {url: newfile.url, editor: vm.filer.file(newfile)});
 		    },
 		    function(response){
 			vm.$emit('error', response.data.message, response.data);
@@ -165,6 +161,8 @@ module.exports = {
         }
     },
     created: function() {
+	this.filer = new F(this);
+	
 	var vm = this;
 	this.$parent.$on('add-file',
 			 function(file){

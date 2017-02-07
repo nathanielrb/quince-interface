@@ -12,6 +12,7 @@ var vm = new Vue({
 	repos: null,
         repo: null,
         fileUrl: null,
+	editor: null,
 	github: null,
 	loggedIn: false,
 	githubParams: {
@@ -26,7 +27,7 @@ var vm = new Vue({
 	loading: null
     },
     created: function(){
-	var storedToken = sessionStorage.getItem('token');
+	var storedToken = localStorage.getItem('token');
 	var code = getParameter('code');
 
 	if(storedToken){
@@ -61,14 +62,14 @@ var vm = new Vue({
 		    var data = response.data;
 		    if(data.token){
 			vm.token = data.token;
-			sessionStorage.setItem('token', vm.token);
+			localStorage.setItem('token', vm.token);
 
 			if(callback)
 			    callback.apply(vm);
 		    }
 		    else{
 			vm.token = null;
-			sessionStorage.removeItem('token');
+			localStorage.removeItem('token');
 			vm.displayError(data.error, data);
 		    }
 		});
@@ -87,7 +88,7 @@ var vm = new Vue({
 		    },
 		    function(data){
 			vm.token = null;
-			sessionStorage.removeItem('token');
+			localStorage.removeItem('token');
 			vm.displayError(data.responseText, data);
 		    });
 	},
@@ -116,8 +117,11 @@ var vm = new Vue({
 		this.repo = path[0] + '/' + path[1];
 	    }
 	},
-        editFile: function(fileUrl){
-            this.fileUrl = fileUrl;
+        editFile: function(args){
+	    console.log("Editing");
+	    console.log(args);
+            this.fileUrl = args.url;
+	    this.editor = args.editor;
         },
 	removeFile: function(file){
 	    this.$emit('remove-file', file);

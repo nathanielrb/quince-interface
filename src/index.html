@@ -13,8 +13,28 @@
     <div class="row">
       
       <div class="side-panel col-md-4">
-	<h1>Quince</h1>
+	<h1>Quince
+ 	  <span class="loading">
+	    <span class="glyphicon glyphicon-refresh spinning" v-if="loading"></span>
+	  </span>
+	</h1>
 
+	<ul class="messages">
+	    <li class="message" v-for="(index, msg) in messages" track-by="$index">
+	      {{msg}}
+	      <a class="close" v-on:click="clearMsg(index)">
+		<i class="fa fa-window-close-o"></i>
+	      </a>
+	    </li>
+
+	    <li  class="error" v-for="(index, error) in errors">
+	      Error: {{error}}
+	      <a class="close" v-on:click="clearError(index)">
+		<i class="fa fa-window-close-o"></i>
+	      </a>
+	    </li>
+	</ul>
+	
 	<div v-if="!token" class="login">
 	  <button  v-on:click="loginGithub">Log In With GitHub</button>
 	</div>
@@ -46,25 +66,7 @@
 	
 	<div class="status">
 	  
-	  <div class="loading">
-	    <span class="glyphicon glyphicon-refresh spinning" v-if="loading"></span>
-	  </div>
 
-	  <ul class="messages">
-	    <li class="message" v-for="(index, msg) in messages" track-by="$index">
-	      {{msg}}
-	      <a class="close" v-on:click="clearMsg(index)">
-		<i class="fa fa-window-close-o"></i>
-	      </a>
-	    </li>
-
-	    <li  class="error" v-for="(index, error) in errors">
-	      Error: {{error}}
-	      <a class="close" v-on:click="clearError(index)">
-		<i class="fa fa-window-close-o"></i>
-	      </a>
-	    </li>
-	  </ul>
 
 	</div><!-- .status -->
 	
@@ -72,7 +74,8 @@
 
 
       <div class="edit-panel col-md-8">
-        <github-file-editor :file-url="fileUrl" :username="username" :repo="repo" :token="token"
+        <github-file-editor :file-url="fileUrl" :editor="editor"
+			    :username="username" :repo="repo" :token="token"
 			    v-on:close="fileUrl = null"
 			    v-on:remove="removeFile"
 			    v-on:add="addFile"
@@ -86,7 +89,6 @@
   </div><!-- container -->
     
   <script src="js/app.min.js"></script>
-  <script src="js/editor.js"></script>
   
 </body>
 </html>

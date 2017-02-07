@@ -62,6 +62,9 @@ ul.breadcrumbs li {
     display: inline;
     font-weight: bold;
 }
+ul.files {
+    position: relative;
+}
 ul.files li {
     list-style: none;
     padding: 1em 1em 0 1em;
@@ -95,8 +98,11 @@ ul.files li.directory {
 }
 
 ul.files li.cover {
-    float: right;
+    position: absolute;
+    top: 0;
+    right: 0;
     border: none;
+    padding: 0;
 }
 ul.files li.cover img {
     padding: 1em 0;

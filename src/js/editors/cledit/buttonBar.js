@@ -1,22 +1,21 @@
-angular.module('classeur.optional.buttonBar', [])
-  .directive('clButtonBarSettings',
-    function () {
-      return {
-        restrict: 'E',
-        templateUrl: 'optional/buttonBar/buttonBarSettings.html'
-      }
-    })
-  .directive('clButtonBar',
-    function (clEditorSvc, clEditorLayoutSvc) {
+module.exports =
+    function(clEditorSvc) {
       var btns = [{
-        icon: 'icon-format-bold',
+        icon: 'fa-header',
+        label: 'Heading',
+        keystroke: 'Ctrl/Cmd+H',
+        click: function () {
+          clEditorSvc.pagedownEditor.uiManager.doClick('heading')
+        }
+      }, {
+        icon: 'fa-bold',
         label: 'Bold',
         keystroke: 'Ctrl/Cmd+B',
         click: function () {
           clEditorSvc.pagedownEditor.uiManager.doClick('bold')
         }
       }, {
-        icon: 'icon-format-ital',
+        icon: 'fa-italic',
         label: 'Italic',
         keystroke: 'Ctrl/Cmd+I',
         click: function () {
@@ -24,63 +23,56 @@ angular.module('classeur.optional.buttonBar', [])
         }
       }, {
         separator: true,
-        icon: 'icon-format-quote',
+        icon: 'fa-quote-left',
         label: 'Blockquote',
         keystroke: 'Ctrl/Cmd+Q',
         click: function () {
           clEditorSvc.pagedownEditor.uiManager.doClick('quote')
         }
       }, {
-        icon: 'icon-code',
+        icon: 'fa-indent',
         label: 'Code',
         keystroke: 'Ctrl/Cmd+K',
         click: function () {
           clEditorSvc.pagedownEditor.uiManager.doClick('code')
         }
       }, {
-        icon: 'icon-link',
+        icon: 'fa-link',
         label: 'Link',
         keystroke: 'Ctrl/Cmd+L',
         click: function () {
           clEditorSvc.pagedownEditor.uiManager.doClick('link')
         }
       }, {
-        icon: 'icon-crop-original',
+        icon: 'fa-image',
         label: 'Image',
         keystroke: 'Ctrl/Cmd+G',
         click: function () {
           clEditorSvc.pagedownEditor.uiManager.doClick('image')
         }
       }, {
-        icon: 'icon-border-outer',
+        icon: 'fa-table',
         label: 'Table',
         keystroke: 'Ctrl/Cmd+T',
         click: function () {
           clEditorSvc.pagedownEditor.uiManager.doClick('table')
         }
       }, {
-        icon: 'icon-format-list-numbered',
+        icon: 'fa-list-ol',
         label: 'Numbered list',
         keystroke: 'Ctrl/Cmd+O',
         click: function () {
           clEditorSvc.pagedownEditor.uiManager.doClick('olist')
         }
       }, {
-        icon: 'icon-format-list-bulleted',
+        icon: 'fa-list-ul',
         label: 'Bullet list',
         keystroke: 'Ctrl/Cmd+U',
         click: function () {
           clEditorSvc.pagedownEditor.uiManager.doClick('ulist')
         }
       }, {
-        icon: 'icon-format-size',
-        label: 'Heading',
-        keystroke: 'Ctrl/Cmd+H',
-        click: function () {
-          clEditorSvc.pagedownEditor.uiManager.doClick('heading')
-        }
-      }, {
-        icon: 'icon-hr',
+        icon: 'fa-asterisk',
         label: 'Horizontal rule',
         keystroke: 'Ctrl/Cmd+R',
         click: function () {
@@ -90,7 +82,7 @@ angular.module('classeur.optional.buttonBar', [])
 
       var undoButton = {
         separator: true,
-        icon: 'icon-undo',
+        icon: 'fa-undo',
         label: 'Undo',
         keystroke: 'Ctrl/Cmd+Z',
         disabled: true,
@@ -100,7 +92,7 @@ angular.module('classeur.optional.buttonBar', [])
       }
 
       var redoButton = {
-        icon: 'icon-redo',
+        icon: 'fa-undo',
         label: 'Redo',
         keystroke: 'Ctrl/Cmd+Y',
         disabled: true,
@@ -128,19 +120,12 @@ angular.module('classeur.optional.buttonBar', [])
         btn.offset = offset
         var click = btn.click
         btn.click = function () {
-          clEditorLayoutSvc.currentControl = undefined
+            // clEditorLayoutSvc.currentControl = undefined
           setTimeout(click, 10)
         }
         offset += props.btnWidth
       })
       props.width = offset + props.margin
-
-      return {
-        restrict: 'E',
-        templateUrl: 'optional/buttonBar/buttonBar.html',
-        scope: true,
-        link: link
-      }
 
       function link (scope, element) {
         scope.btns = btns
@@ -160,10 +145,6 @@ angular.module('classeur.optional.buttonBar', [])
           .translateY(closedOffsetY)
           .start()
 
-        scope.$watch('editorLayoutSvc.pageWidth', animate)
-        scope.$watch('editorLayoutSvc.isEditorOpen', animate)
-        scope.$watch('editorLayoutSvc.isMenuOpen', animate)
-
         function checkBtnActive () {
           undoButton.disabled = !clEditorSvc.cledit.undoMgr.canUndo()
           redoButton.disabled = !clEditorSvc.cledit.undoMgr.canRedo()
@@ -176,19 +157,8 @@ angular.module('classeur.optional.buttonBar', [])
           clEditorSvc.cledit.undoMgr.off('undoStateChange', checkBtnActive)
         })
 
-        function animate () {
-          var newIsOpen = !!clEditorLayoutSvc.isEditorOpen && !clEditorLayoutSvc.isMenuOpen && clEditorLayoutSvc.pageWidth - 240 > props.width
-          if (isOpen === newIsOpen) {
-            return
-          }
-          isOpen = newIsOpen
-          buttonBarElt.clanim
-            .translateX(-props.width / 2)
-            .translateY(isOpen ? openOffsetY : closedOffsetY)
-            .duration(200)
-            .delay(isOpen ? 270 : 0)
-            .easing('materialOut')
-            .start(true)
-        }
+
       }
-    })
+
+	return btns;
+    }
